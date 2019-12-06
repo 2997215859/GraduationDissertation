@@ -1,8 +1,5 @@
-% !TEX TS-program = xelatex
-% !TEX encoding = UTF-8 Unicode
-% !Mode:: "TeX:UTF-8"
-\documentclass[bachelor,nocolorlinks, printoneside]{seuthesis} % 本科
-% \documentclass[master]{seuthesis} % 硕士
+% \documentclass[bachelor,nocolorlinks, printoneside]{seuthesis} % 本科
+\documentclass[master]{seuthesis} % 硕士
 % \documentclass[doctor]{seuthesis} % 博士
 % \documentclass[engineering]{seuthesis} % 工程硕士
 \usepackage{CJK,CJKnumb}
@@ -25,19 +22,19 @@
 \secretlevel{公开}    %学位论文密级分为"公开"、"内部"、"秘密"和"机密"四种
 \studentid{09013000}   %学号要完整，前面的零不能省略。
 
-\title{基于深度学习的希腊字母研究}{}{Deep learning in greek alphabet}{subtitle}
-\author{朴智新}{Zhixin Piao}
-\advisor{无名氏}{教授}{No Name}{Prof.}
-\coadvisor{副导师}{副教授}{Co-advisor's Name}{Associate Prof.} % 没有
+\title{一种TDD/FDD下低时延宽带无线信道密钥生成系统研究}{}{Deep learning in greek alphabet}{subtitle}
+\author{袁瑞}{Rui Yuan}
+% \advisor{彭林宁}{副研究员}{Linning Peng}{Associate Prof.}  % 没有
+\coadvisor{彭林宁}{副教授}{Linning Peng}{Associate Prof.}
 
 % \degree{工学硕士} % 详细学位名称
-\major[12em]{计算机科学与技术}
+\major[12em]{网络空间安全}
 \defenddate{答辩日期}
 \authorizedate{学位授予日期}
-\department{计算机科学与工程}{department name}
-\duration{2017年1月—2017年6月}
-\address{河海院2楼}
-\thanks{本论文获国家XXX计划项目（2012AA00A00）和国家杰出青年科学基金项目（01234567）资助。}
+\department{网络空间安全}{department name}
+\duration{2017年9月—2020年6月}
+\address{东南大学}
+% \thanks{本论文获国家XXX计划项目（2012AA00A00）和国家杰出青年科学基金项目（01234567）资助。}
 \maketitle
 
 \begin{abstract}{希腊字母，腓尼基字母，语言，深度学习}
@@ -72,96 +69,95 @@ In its classical and modern forms, the alphabet has 24 letters, ordered from alp
 % \end{table}
 % \end{terminology}
 
-
 \begin{Main} % 开始正文
 
-\chapter{前言}
-\emph{在泛函分析中，卷积、旋积或摺积(英语：Convolution)是通过两个函数f 和g 生成第三个函数的一种数学算子，表征函数f 与g经过翻转和平移的重叠部分的面积。}
+\chapter{绪论}
+\section{研究背景和意义}
 
-\section{数学公式}
-\subsection{简单的数学公式}
-\textbf{卷积}（\textbf{convolution}）在图像分析的线性方法中是一种重要的运算。卷积是一个积分，反映一个函数$f(t)$在另一个函数上$h(t)$移动时所重叠的量。函数$f$和$h$在有限域$[0,t]$上的$1D$卷积$f*h$由下式给出：
- $$(f*h)(t) \equiv \int_0^t {f(\tau )h(t - \tau )d\tau } $$
+无线通信在民事和军事应用中已经发挥着不可替代的作用，研究无线通信的安全性具有重要研究价值。无线网络由于接入层的开放性，因此容易遭受攻击。无线网络的安全性通常由传统密码学保证，比如公钥基础设施（PKI）。PKI被广泛应用于保护计算机网络，但并不适用于物联网设备。首先，PKI是依赖高时间复杂度算法，而物联网设备通常是低功耗设备。此外，PKI的基石来自数论，比如大整数分解问题，随着量子计算的发展，此类问题或被攻破。
 
-\subsection{带自动编号的公式}
-这里可以限定在$[0,t]$区间，原因是我们假设负坐标部分的值是0。为了准确起见，我们还可以将卷积积分的上限扩展为$( - \infty ,\infty )$：
-\begin{equation}(f*h)(t) \equiv \int_{ - \infty }^\infty  {f(\tau )h(t - \tau )d\tau }  = \int_{ - \infty }^\infty  {f(t - \tau )h(\tau )d\tau }
-  \end{equation} 
+\section{国内外研究现状}
 
-\subsection{带等号对齐的公式}
-卷积可以推广到更高维。令$2D$函数$f$和$h$的卷积$g$记为$f*h$，则有：
+无线通信的广播特性允许范围内其他用户接收信号，因此容易遭受攻击。攻击者可以利用该特性进行被动攻击，比如窃听和监控信息、分析网路流量，或者进行主动攻击，比如修改消息、伪造认证、重放攻以及拒绝服务（Dos）攻击\cite{Zhang2016Key}。传统的安全工作依赖于公钥算法体系，比如RSA等算法，因为窃听者破译信息所需时长远远超过信息本身的价值，由此保障后向安全。
+
+图\ref{wirelss-network-security}所示传统加密方法包含对称加密和非对称个加密，对称加密算法使用相同的一对密钥，可以用于对加密时间要求较高的场景；非对称加密算法使用一对公钥和私钥，通常用于密钥分发。
+
+传统加密算法有一下几个问题。首先，传统加密算法依赖一些数学问题的计算难度，比如离散对数问题。随着硬件发展和算力的大幅提升，通过计算难度保证安全不再可取。此外，传统加密算法需要一个可信的密钥管理设施，并不适用于去中心化的无线传感器网络（WSN）和无线自组网络，并且传感器节点的计算能力有限。
+
+即使通信协议的上层应用了传统加密算法，物理层也应当加强无线安全、抵抗攻击。物理层安全（PLS）利用无线信道的不可预测性和随机性来达到信息论安全。如图\ref{wirelss-network-security}所示，PLS方法包括无密钥安全和基于密钥的安全机制。在Wyner提出的窃听信道模型中，无密钥安全不需要加密密钥，而是通过合法用户和窃听者之间不同的信道特性来保证安全\cite{6739367}。合法用户需要窃听用户的瞬态或者稳态信道状态信息（CSI），但是在生产环境中，获取窃听用户的瞬态和稳态信号十分复杂。
+
+基于密钥的安全机制追随到1919年提出的Vernam加密，即一次一密\cite{vernam1922secret}。之后，香农为完全保密提出理论基础\cite{shannon1949communication}。当密钥Key的信息大于等于消息M的信息时，消息M可以被编码成码字C，并不会泄露任何消息，即
+
 \begin{equation}
-\begin{aligned}
-(f*h)(x,y) &= \int_{ - \infty }^\infty  {\int_{ - \infty }^\infty  {f(a,b)h(x - a,y - b)} } dadb\\
- &= \int_{ - \infty }^\infty  {\int_{ - \infty }^\infty  {f(x - a,y - b)h(a,b)} } dadb\\
-\end{aligned}
+    H(M|C) = H(M)
 \end{equation}
 
-\section{伪代码}
-在写论文的时候我们通常要写伪代码，伪代码里面有时甚至还要包含数学公式（如根号一类的）。伪代码会自动找一个比较好的位置插入图片。
+其中，$H(\cdot)$表示熵。然而，在生产环境中，在合法用户之间协商不可重用的随机密钥是非常困难的。一种可行的方案是，将密钥生成和对称加密结合在一起形成混合加密系统。
 
-\begin{algorithm}
-    \caption{用归并排序求逆序数}
-    \begin{algorithmic}[1] %每行显示行号
-        \Require $Array$数组，$n$数组大小
-        \Ensure 逆序数
-        \Function {MergerSort}{$Array, left, right$}
-            \State $result \gets 0$
-            \If {$left < right$}
-                \State $middle \gets (left + right) / 2$
-                \State $result \gets result +$ \Call{MergerSort}{$Array, left, middle$}
-                \State $result \gets result +$ \Call{MergerSort}{$Array, middle, right$}
-                \State $result \gets result +$ \Call{Merger}{$Array,left,middle,right$}
-            \EndIf
-            \State \Return{$result$}
-        \EndFunction
-        \State
-        \Function{Merger}{$Array, left, middle, right$}
-            \State $i\gets left$
-            \State $j\gets middle$
-            \State $k\gets 0$
-            \State $result \gets 0$
-            \While{$i<middle$ \textbf{and} $j<right$}
-                \If{$Array[i]<Array[j]$}
-                    \State $B[k++]\gets Array[i++]$
-                \Else
-                    \State $B[k++] \gets Array[j++]$
-                    \State $result \gets result + (middle - i)$
-                \EndIf
-            \EndWhile
-            \While{$i<middle$}
-                \State $B[k++] \gets Array[i++]$
-            \EndWhile
-            \While{$j<right$}
-                \State $B[k++] \gets Array[j++]$
-            \EndWhile
-            \For{$i = 0 \to k-1$}
-                \State $Array[left + i] \gets B[i]$
-            \EndFor
-            \State \Return{$result$}
-        \EndFunction
-    \end{algorithmic}
-\end{algorithm}
-
-\section{插入图片}
-在使用该命令的时候，图片会自动找一个他觉得比较好的位置插入图片，我们就不需要担心前面改了文字之后后面的格式乱掉。
 \begin{figure}[htbp!]
-\centering \includegraphics[width=0.9\textwidth]{img/test.jpg} \caption{图片的一个简单应用场景}
+    \centering \includegraphics[width=0.9\textwidth]{images/wireless-network-security} 
+    \caption{无线网络安全}
+    \label{wirelss-network-security}
 \end{figure}
 
-\begin{figure}
-\centering
-\subfigure[the first subfigure]{
-\includegraphics[width=0.4\textwidth]{img/test.jpg} 
-}
-\subfigure[the second subfigure]{
-\includegraphics[width=0.4\textwidth]{img/test.jpg} 
-}
-\caption{子图应用场景}
-\end{figure}
+本文研究无线信道密钥生成，即利用无线信道的随机性来生成密钥。和公钥体系利用数论问题保证安全性不同，无线密钥生成的安全性基于信息论。因为它基于无线信道的随机性\cite{ahlswede1993common}\cite{maurer1993secret}，并且不需要借助其他用户的信息。以上所提及方法的优缺点列在表\ref{comparison-different-schemes}。
 
-\section{引用论文}
-使得论文符合要求\cite{Yao:2015ix}\cite{seucover}\cite{test1}\cite{test}\cite{R1}。
+\begin{table}[]
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    方法 & 描述 & 实现复杂度 & 优点 & 缺点 \\ \hline
+    对称加密 & 合法通信双方用对称密钥加密数据 & 易实现 & 算法复杂度低 & 提前协商会话密钥；计算安全性 \\ \hline
+    非对称加密 & 合法通信双方使用一对公私钥协商会话密钥 & 易实现 & 可用于协商会话密钥 & 计算安全性；依赖PKI；不适于低功耗设备 \\ \hline
+    无密钥安全 & 合法通信双方通过设计编码和信道特性避免泄露信息 & 实现复杂 & 信息论安全；无需密钥的安全传输 & 依赖窃听者的CSI \\ \hline
+    基于密钥的安全机制 & 合法通信双方利用信道的随机性生成密钥 & 易实现 & 信息论安全；轻量；无需第三方参与 & 受限于信道特性本身 \\ \hline
+    \end{tabular}
+    \caption{不同方法的比较
+    \label{comparison-different-schemes}}
+\end{table}
+
+1993年Maurer等人理论上提出密钥生成\cite{ahlswede1993common}\cite{maurer1993secret}。密钥生成的模型如图\ref{}所示。图\ref{}中Alice和Bob需要建立一个安全的加密通道，窃听者Eve与Alice相距d厘米，并监听了所有传输过程。Alice、Bob和Eve可以分别接收到信号$X^n = (X_1, ..., X_n)$，$Y^n = (Y_1, ..., Y_n), Z^n = (Z1, ..., Z_n)$。Alice和Bob在公共信道上交换消息s，Eve同样可以接收到消息s。对任何$\epsilon > 0$和足够大的$n$，如果存在$K^A = g_A(X^n, s)$和$K^B = g_B(Y^n, s)$使得密钥生成体系满足
+
+\begin{eqnarray}
+    Pr(K^A \neq K^B) < \epsilon \label{keyrate1} \\
+    \frac{1}{n}I(K^A; s, Z^n) < \epsilon \label{keyrate2} \\
+    \frac{1}{n}H(K^A) > R - \epsilon \label{keyrate3} \\
+    \frac{1}{n}log[\mathcal{K}] < \frac{1}{n}H(K^A) + \epsilon \label{keyrate4}
+\end{eqnarray}
+
+那么式中R即可达密钥速率，其中$I(\cdot)$表示互信息，$\mathcal{K}$表示密钥key的字母表。公式\ref{keyrate1}表示Alice和Bob生成相同密钥的可能性；公式\ref{keyrate2}表示通过公共信道传输消息，不会泄露给窃听者Eve，从而保证密钥安全性；公式\ref{keyrate4}确保密钥是均匀分布。最大可达密钥速率可以用密钥容量定义，
+
+\begin{equation}
+    C_K = min[I(X;Y), I(X, Y|Z)]
+\end{equation}
+
+目前已经有一些研究工作实现上述理论。1995年第一个实际的密钥生成协议被提出\cite{hershey1995unconventional}，之后陆续出现大量研究无线密钥生成的相关工作。\citet{hershey1995unconventional}的第四章从信息论角度阐述了无线密钥生成。\citet{WangSurvey}将信道探测和量化合并为一个步骤来研究。\citet{zeng2015physical}介绍了密钥生成技术存在的机遇和挑战，但是未涉及到具体实现细节。尽管\citet{ren2011secret}密钥生成方法已经被总结了。
+
+无线信道密钥生成协议通常包含四个步骤，信道探测、量化、信息调和以及隐私放大。
+
+\section{研究内容和方法}
+
+\chapter{理论基础和概念界定}
+\section{概念界定}
+\section{理论基础}
+
+\chapter{发展现状}
+\section{发展背景}
+\section{发展现状}
+\section{存在问题}
+
+\chapter{研究设计}
+\section{研究背景}
+\section{模型方法}
+\section{数据获取和处理}
+
+\chapter{实证分析}
+\section{描述性分析}
+\section{实证分析}
+\section{实证小结}
+
+\chapter{对策建议}
+\chapter{结论}
+
 
 \end{Main} % 结束正文
 
@@ -182,8 +178,8 @@ In its classical and modern forms, the alphabet has 24 letters, ordered from alp
 %\begin{thebibliography}{99}
 
 
-%\bibliographystyle{ieee}
-%\bibliography{seuthesis}
+% \bibliographystyle{ieee}
+% \bibliography{seuthesis}
 
 
 \end{document}

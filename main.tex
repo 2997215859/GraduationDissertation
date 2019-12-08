@@ -92,7 +92,14 @@ In its classical and modern forms, the alphabet has 24 letters, ordered from alp
 
 \subsection{无线信道密钥生成技术}
 
-\subsection{无线网络特性分析}
+无线信道密钥生成技术属于物理层安全的范畴，通过利用合法通信双方之间的信道特性，估计无线信道特征，量化生成会话密钥，进而将会话密钥提供给上层协议使用。
+
+物理层安全不同于传统密码学，目前演化成了两个分支，无密钥安全和基于密钥的安全机制。其中无密钥实现复杂，需要苛刻的信道条件。基于密钥的安全机制是将物理层安全和传统安全机制结合的安全方案。在无线通信网络中，无线信道通信的特性有以下特性：
+
+\begin{itemize}
+    \item \textbf{短时互易性}。在时分双工（Time Division Duplex, TDD）系统中，通信双方的上下行信道在相干时间内具有相似的信道特征。
+    \item \textbf{}
+\end{itemize}
 
 \section{国内外研究现状}
 
@@ -150,7 +157,7 @@ In its classical and modern forms, the alphabet has 24 letters, ordered from alp
 
 目前已经有一些研究工作实现上述理论。1995年第一个实际的密钥生成协议被提出\cite{hershey1995unconventional}，之后陆续出现大量研究无线密钥生成的相关工作。\citet{WangSurvey}的第四章从信息论角度阐述了无线密钥生成。\citet{WangSurvey}将信道探测和量化合并为一个步骤来研究。\citet{zeng2015physical}介绍了密钥生成技术存在的机遇和挑战，但是未涉及到具体实现细节。尽管\citet{ren2011secret}总结了一些密钥生成方法，比如基于接收信号强度（RSS）和基于信道相位的方法，但是由于之后密钥生成方法和技术迅速发展，所以仍然需要对密钥生成方法进行梳理。本文会对密钥生成技术做一个完整的文献综述。同时，本文会对密钥生成技术的未来发展提出相关建议。
 
-无线信道密钥生成协议通常包含四个步骤，信道探测、量化、信息调和以及隐私放大。
+
 
 \section{研究内容和方法}
 

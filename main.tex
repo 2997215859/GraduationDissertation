@@ -180,9 +180,86 @@ GNURadio是软件无线电开发平台，被广泛应用于音频处理、移动
 
 在现有关于无线密钥生成技术的研究中，无线密钥生成技术的理论和仿真居多，在实际生产环境中实现并验证的研究并不多见。本文基于GNURadio软件无线电平台，设计和开发了TDD/FDD模式下低延迟无线密钥生成系统，并在不同场景下采集数据，通过分析CSI的相关性、信道随机性、密钥随机性、信息泄露等五种指标，充分验证无线密钥生成技术在实际环境中使用的安全性和可靠性。
 
-\chapter{理论基础和概念界定}
-\section{概念界定}
-\section{理论基础}
+\chapter{无线密钥生成系统的理论基础}
+
+本章节主要介绍无线密钥生成系统的理论基础。无线密钥生成系统的本质是利用无线信道的短时互易性、时空唯一性进行密钥生成的工作。另外本章介绍了系统生成密钥的评估标准，通过CSI相关性、信道随机性、密钥随机性和信息泄漏率等五个方面评估系统生成密钥的可靠性和安全性。
+
+\section{无线信道特征}
+\section{信道估计}
+
+在一个单入单出线性系统中，设脉冲响应函数为$g(k)$，根据维纳霍夫方程，发射信号$x(k))$和$y(k)$之间的相关函数为，
+
+\begin{equation}
+    R_{xy}(\tau)  = \sum_{j=0}^{\infty} g(j) R_x(\tau-j)\Delta t
+\end{equation}
+
+同时，M序列的自相关函数为，
+
+\begin{equation}
+    R_m(\tau) = \left\{
+  \begin{aligned}
+  &1, &\tau = 0, N, 2N, ... \\
+  &-\frac{1}{N}, &wherelse \\
+  \end{aligned}
+  \right.
+\end{equation}
+
+因此，当发射信号x(k)为M序列时，即$x(k) = m(k)$时，有，
+
+\begin{equation}
+    R_{ym}(k) = \sum_{j=0}^{N-1} \tilde{g}(j)R_m(k-j)\Delta t
+\end{equation}
+\begin{equation}
+    R_{ym}(k) = \frac{(N+1)\Delta t}{N} \tilde{g}(k) - \frac{\Delta t}{N} \sum_{j=0}^{N-1} \tilde{g}(j)
+\end{equation}
+  
+\begin{equation}\label{eq1}
+    \tilde{g}(k) = \frac{N}{(N+1)\Delta t} [R_{ym}(k) + c]
+\end{equation}
+
+其中，
+
+\begin{equation}
+  R_{ym}(k) = \frac{1}{N}\sum_{j=0}^{N-1}m(j-k)y(j)
+\end{equation}
+
+工程上，
+
+\begin{equation}
+  c=-R_{ym}(N_P - 1)
+\end{equation}
+  
+在TDD/FDD系统中，用户Alice和Bob互相发送导频信号帧$m(t)$作为导频信号。设$h_{ab}$代表Alice到Bob信道的频率响应，$h_{ba}$代表Bob到Alice信道的频率响应。那么，
+
+Alice检测的时域信号为，
+
+\begin{equation}
+    y_{ba}(t) = m(t) * h_{ba}(t) + n_{ba}(t) 
+\end{equation}
+
+Bob检测的时域信号为，
+
+\begin{equation}
+    y_{ab}(t) = m(t) * h_{ab}(t) + n_{ba}(t)    
+\end{equation}
+
+因此Bob通过式\ref{eq1}估计信道，
+
+\begin{equation}
+    \tilde{h}_{ab}(k) = a\sum_{j=0}^{N-1}m(j-k)y_{ab}(j)
+\end{equation}
+  
+同理，Alice通过式（\ref{eq1}）估计信道，
+  
+\begin{equation}
+    \tilde{h}_{ba}(k) = a\sum_{j=0}^{N-1}m(j-k)y_{ba}(j)
+\end{equation}
+  
+其中，a为常数
+
+\section{密钥生成流程}
+
+\section{无线信道密钥的评估标准}
 
 \chapter{TDD系统信道探测系统研究设计}
 \chapter{FDD系统信道探测系统研究设计}

@@ -364,7 +364,9 @@ Bob检测的时域信号为，
 
 \subsection{特征量化}
 
-目前有多种量化策略，常用的有单门限量化、多门限量化、自适应门限量化等。文献\citet{aono2005wireless}采用如图\ref{single_quantization}所示的单门限量化，量化阈值取RSSI（Radio Signal Strength Indicator）平均值，可以带来比较高的密钥一致率，但是测量值在阈值附近时容易量化错误，并且由于量化精度不高，在信道变化缓慢时，生成密钥容易出现大量连续0比特和1比特长串。
+目前有多种量化策略，常用的有单门限量化、多门限量化、自适应门限量化等。
+
+文献\citet{aono2005wireless}采用如图\ref{single_quantization}所示的单门限量化，量化阈值取RSSI（Radio Signal Strength Indicator）平均值，可以带来比较高的密钥一致率，但是测量值在阈值附近时容易量化错误，并且由于量化精度不高，在信道变化缓慢时，生成密钥容易出现大量连续0比特和1比特长串。
 
 \begin{figure}[htbp!]
     \centering \includegraphics[width=0.9\textwidth]{images/single_quantization} 
@@ -372,6 +374,23 @@ Bob检测的时域信号为，
     \label{single_quantization}
 \end{figure}
 
+文献\citet{mathur2008radio}采用如图\ref{two_quantization}所示双门限量化，将门限$L^+$和$L^-$之间的值舍弃，将$L^+$以上的值量化为1，将$L^-$以下的值量化为0，通信双方会在公共信道上交互传输未舍弃比特位的索引信息，因此第三方窃听者只有可能得知哪些比特被使用而无法得知被量化成0还是1，但是会降低密钥生成速率。
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/two_quantization} 
+    \caption{双门限量化}
+    \label{two_quantization}
+\end{figure}
+
+文献\citet{patwari2009high}通过多次测量表明双门限量化每次会丢失5\%至27\%的比特数，并提出多比特自适应量化方法。文献\citet{yasukawa2008secret}使用多级量化，先将RSSI根据大小排序，然后分割成等间隔的$N = 2^m$块，m是量化比特数，并且通常$N \leq log_2^{maxValue}$，这样每个量化阶值的出现率是相同的。
+
+通常多比特量化之后，会进一步编码成对应阶数格雷码。格雷码的特性是，相邻位置的格雷码只有一个位置的比特不同，因此使用格雷码可以提高通信双方的密钥一致率。无论是上述哪种量化方法，都避免不了密钥生成率和密钥一致性之间的矛盾。量化阶数越高，量化比特数越多，密钥生成率越高，但误差影响较大，密钥一致率降低；量化阶数越低，量化比特数越少，密钥一致率越高，但是密钥生成速率越低。
+
+本文使用均匀量化的方法。在一次密钥生成过程中，Alice和Bob分别探测信道、预处理得到CSI。先对CSI降采样，以降低密钥泄漏率\cite{linning2019investigation}。同时，量化可以降低噪声的影响\cite{wang2015survey}。设量化时CSI最大值为$m_{max}$，量化阶数为R，量化前的值为m，量化后的值为q，将CSI归一化后按照式\ref{quantization_formula}均匀量化，得到离散的采样值，采样值对应比特数即量化阶数，本文量化阶数为3。密钥的生成速率与量化阶数成正比，通信双方的密钥一致率与量化阶数成反比。因此可以根据信噪比去调整量化阶数以得到较为均衡的密钥生成速率与一致率。量化之后的采样值需要进一步格雷编码降低密钥的不一致率。然后进行8b10b编码，过程如图\ref{quantization}所示。
+
+\begin{equation} \label{quantization_formula}
+    q = \frac{m_{max} * m}{2^{max}}
+\end{equation}
 
 \section{无线信道密钥的评估标准}
 

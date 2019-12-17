@@ -178,7 +178,7 @@ TDD模式和FDD模式的主要不同点是收发导频信号的机制不同。TD
 
 GNURadio是软件无线电开发平台，被广泛应用于音频处理、移动通信、卫星追踪、GSM网络等计算机软件\cite{Blossom2004GNU}，用户可以在GNURadio平台上设计、仿真以及部署高性能无线电的软件无线电系统。本文基于GNURadio软件无线电开发平台和USRP N210硬件，设计TDD/FDD下低时延宽带无线信道密钥生成系统，并验证生产环境下无线密钥生成技术的可靠性和安全性。
 
-在现有关于无线密钥生成技术的研究中，无线密钥生成技术的理论和仿真居多，在实际生产环境中实现并验证的研究并不多见。本文基于GNURadio软件无线电平台，设计和开发了TDD/FDD模式下低延迟无线密钥生成系统，并在不同场景下采集数据，通过分析CSI的相关性、信道随机性、密钥随机性、信息泄露等五种指标，充分验证无线密钥生成技术在实际环境中使用的安全性和可靠性。
+在现有关于无线密钥生成技术的研究中，无线密钥生成技术的理论和仿真居多，在实际生产环境中实现并验证的研究并不多见。本文基于GNURadio软件无线电平台，设计和开发了TDD/FDD模式下低延迟无线密钥生成系统，并在不同场景下采集数据，通过分析CSI的相关性、信道随机性、密钥随机性、信息泄露率等四种指标，充分验证无线密钥生成技术在实际环境中使用的安全性和可靠性。
 
 \section{本文主要内容与章节安排}
 
@@ -188,11 +188,13 @@ GNURadio是软件无线电开发平台，被广泛应用于音频处理、移动
 
 本文完成的主要工作包括：
 
-（1）分析无线密钥生成技术的意义和背景，介绍无线密钥生成技术的国内外研究现状以及相关问题
-（2）基于无线密钥生成技术的理论，设计完整的无线密钥生成技术方案，搭建TDD/FDD无线密钥生成系统。
-（3）基于TDD/FDD无线密钥生成系统，研究不同场景下无线密钥生成系统的安全性和可靠性，通过多次实验分析通信参与者CSI的相关性、无线信道随机性、密钥的随机程度、信息泄露量，支撑无线密钥生成技术的实际应用意义。
-（4）todo 射频指纹？
-（5）todo 通过某些技术提高互易性？
+\begin{itemize}
+    \item（1）分析无线密钥生成技术的意义和背景，介绍无线密钥生成技术的国内外研究现状以及相关问题
+    \item（2）基于无线密钥生成技术的理论，设计完整的无线密钥生成技术方案，搭建TDD/FDD无线密钥生成系统。
+    \item（3）基于TDD/FDD无线密钥生成系统，研究不同场景下无线密钥生成系统的安全性和可靠性，通过多次实验分析通信参与者CSI的相关性、无线信道随机性、密钥的随机程度、信息泄露量，支撑无线密钥生成技术的实际应用意义。
+    \item（4）todo 射频指纹？
+    \item（5）todo 通过某些技术提高互易性？
+\end{itemize}
 
 \subsection{本文章节安排}
 
@@ -202,7 +204,7 @@ todo
 
 \chapter{无线密钥生成系统的理论基础}
 
-本章节主要介绍无线密钥生成系统的理论基础。无线密钥生成系统的本质是利用无线信道的短时互易性、时空唯一性进行密钥生成的工作，在信道探测之后，量化生成的CSI，并进一步调和和隐私放大。另外本章介绍了系统生成密钥的评估标准，通过CSI相关性、信道随机性、密钥随机性和信息泄漏率等五个方面评估系统生成密钥的可靠性和安全性。
+本章节主要介绍无线密钥生成系统的理论基础。无线密钥生成系统的本质是利用无线信道的短时互易性、时空唯一性进行密钥生成的工作，在信道探测之后，量化生成的CSI，并进一步调和和隐私放大。另外本章介绍了系统生成密钥的评估标准，通过CSI相关性、信道随机性、密钥随机性和信息泄漏率等四个方面评估系统生成密钥的可靠性和安全性。
 
 \section{无线信道特性}
 
@@ -389,10 +391,149 @@ Bob检测的时域信号为，
 本文使用均匀量化的方法。在一次密钥生成过程中，Alice和Bob分别探测信道、预处理得到CSI。先对CSI降采样，以降低密钥泄漏率\cite{linning2019investigation}。同时，量化可以降低噪声的影响\cite{wang2015survey}。设量化时CSI最大值为$m_{max}$，量化阶数为R，量化前的值为m，量化后的值为q，将CSI归一化后按照式\ref{quantization_formula}均匀量化，得到离散的采样值，采样值对应比特数即量化阶数，本文量化阶数为3。密钥的生成速率与量化阶数成正比，通信双方的密钥一致率与量化阶数成反比。因此可以根据信噪比去调整量化阶数以得到较为均衡的密钥生成速率与一致率。量化之后的采样值需要进一步格雷编码降低密钥的不一致率。然后进行8b10b编码，过程如图\ref{quantization}所示。
 
 \begin{equation} \label{quantization_formula}
-    q = \frac{m_{max} * m}{2^{max}}
+    q = \frac{2^R * m}{m_{max}}
 \end{equation}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/quantization}
+    \caption{量化}{} % Quantization.
+    \label{quantization}
+\end{figure}
+
+\subsection{信息调和}
+
+信息调和是在公共信道对不完全一致的密钥信息协商。由于短时信道互易性，所以通信双方分别通过上述步骤提取出的密钥是近似的，但是由于信道在探测的时隙内发生变化、环境中的干扰以及硬件指纹等各种因素，双方提取出的密钥又是不完全一致的。因此需要进一步调和。
+
+信息调和通常基于Caseade协议\cite{Kitano2007A}或者纠错编码，比如 Turbo 码，BCD 码，LDPC 码等\cite{peng2018securing}。本文使用两种方式调和生成密钥。假设通信双方Alice和Bob，量化之后提取的比特字符串为$key1$和$key2$。
+
+如果通过CRC校验码去除不一致比特，那么Alice将比特字符串$key1$分组并计算CRC校验码，将冗余部分码字发送给Bob。Bob进行同样分组，并根据Alice发送过来的冗余部分码字去除不一致的组。Bob再将检验结果回发给Alice，Alice根据校验结果去除不一致的组。最终双方可以得到一致的会话密钥。使用CRC校验码的调和过程如图\ref{crc}所示。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/crc}
+    \caption{信息调和}{} % Crc Reconciliation
+    \label{crc}
+\end{figure}
+
+% todo 纠错解码着一块还可以写的更加详细一点
+除了通过CRC校验码去除不一致比特，Alice先将会话密钥进行纠错编码，再和key1异或，然后发送给Bob，Bob再次和key2异或，之后通过纠错解码器纠正错误比特位得到会话密钥key'。使用纠错码的过程如图\ref{error_correcting_code}所示。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/error_correcting_code}
+    \caption{纠错码}{} % Crc Reconciliation
+    \label{error_correcting_code}
+\end{figure}
+
+% todo
+\subsection{隐私放大}
+
 \section{无线信道密钥的评估标准}
+
+本文为评估无线密钥生成系统性能，通过CSI相关性、信道随机性、密钥随机性和信息泄漏率等四个方面评估系统生成密钥的可靠性和安全性。
+
+\subsection{CSI相关性}
+
+本文通过皮尔逊相关系数计算CSI相关性，假设通信系统中，合法通信双方Alice和Bob信道探测结果为$\tilde{H}_{ba}$和$\tilde{H}_{ab}$，窃听者Eve探测结果为$\tilde{H}_{ae}$。
+
+那么Alice和Bob之间CSI相关性为，
+
+\begin{equation}\label{equation_corr}
+    Reprocity_{ab, ba} = \frac{E[(\tilde{H}_{ab}-\mu_{\tilde{H}_{ab}})(\tilde{H}_{ba}-\mu_{\tilde{H}_{ba}})]}{\sigma_{\tilde{H}_{ab}}\sigma_{\tilde{H}_{ba}}}
+\end{equation}
+
+为研究Eve窃听的CSI结果与合法信道的CSI结果的差异，计算Eve的CSI和Alice的CSI相关性，
+
+\begin{equation}\label{equation_corr}
+    Reprocity_{ab, ae} = \frac{E[(\tilde{H}_{ab}-\mu_{\tilde{H}_{ab}})(\tilde{H}_{ae}-\mu_{\tilde{H}_{ae}})]}{\sigma_{\tilde{H}_{ab}}\sigma_{\tilde{H}_{ae}}}
+\end{equation}
+
+其中，$\sigma_{\{.\}}$表示标准差，$E\{\cdot\}$表示期望。
+
+理论上，在相干距离之外，
+
+\begin{equation}
+    Reprocity_{ab, ae} < Reprocity_{ab, ba}
+\end{equation}
+
+$Reprocity_{ab, ba}$越大表明合法通信双方信道互易性越好，CSI相关性越高，密钥一致率越高。$Reprocity_{ab, ba}$较低的原因可能是通信双方硬件指纹差异、信道环境糟糕等，可以使用一些预处理算法弥补互易性的损失。
+
+$Reprocity_{ab, ae}$越小表明第三方可以窃听的信息越少，CSI相关性越低，密钥泄露更少。在相干距离（通常是半波长）以外，由于导频信号经过不同的信道衰落，因此Eve估计得到的CSI与合法信道的CSI相关性较低。在相干距离以内，由于物理距离上接近，Eve估计的CSI相关性较高，但是在实际环境中，窃听者无法如此靠近合法通信参与者。
+
+\subsection{信息泄露率}
+
+本文设计的密钥生成系统中，在信道探测、信息调和阶段，对第三方来说是完全透明的\cite{sahin2016secure}。设Alice、Bob和Eve对信道探测为$H_A$、$H_B$和$H_E$。则A和B之间信道的互信息为，
+
+\begin{equation}
+    I_k = I(H_A; H_B) = log_2^{\frac{\left|R_{AA}\right|\left|R_{BB}\right|}{\left|R_{AB}\right|}}
+\end{equation}
+
+其中， $\left|R_{xy}\right| = E\{H_x H_y^H\}$表示协方差系数。
+
+存在eve时，alice和bob之间的互信息量为， 
+
+\begin{equation}
+  I_{sk} = I(H_A; H_B | H_E) = log_2^{\frac{\left|R_{AE}\right|\left|R_{BE}\right|}{\left|R_{EE}\right|\left|R_{ABE}\right|}}
+\end{equation}
+
+通过$I_{sk}$与$I_k$的比例来评估信息未泄露的比率，
+
+\begin{equation}
+  \eta = I_{sk} / I_k
+\end{equation}
+
+\subsection{随机性评估}
+
+本文既评估了系统运行过程中的CSI随机性，也测试了生成密钥的随机性。
+
+\subsubsection{CSI随机性}
+
+CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI的随机性，本文采集了不同场景下的多组CSI，计算多组CSI的图像熵，用来衡量CSI的随机性。
+
+使用二维快速傅里叶变换(2d-fft)的图像熵来表征信道的随机性。设计算得到的多组CSI归一化之后为矩阵$C_{MxN}$，M为CSI长度，N为采集的CSI组数。$C(x, y)$表示第i行第j列的值，那么对其做2d-fft计算，其2d-fft的矩阵为,
+
+\begin{equation}
+  F(u, v) = \frac{1}{MN}\sum_{x=0}^{M-1}\sum_{y=0}^{N-1} C(x,y) e^{-j2\pi(\frac{xu}{M}+\frac{yv}{N})}
+\end{equation}
+
+
+为了缩小差距，将$F$取In函数得到$L$,
+
+\begin{equation}
+  L(u, v) = log_e^{F(u, v)}
+\end{equation}
+
+再归一化到[0, 1]范围内得到,
+
+\begin{equation}
+  I(u, v) = \frac{L(u, v) - min{L}}{max(L) - min(L)}
+\end{equation}
+
+将[0, 1]区间分割成256等份，统计I(u, v)在各个区间的概率，计算I(u, v)的熵，
+
+\begin{equation}
+  H(u, v) = -\sum_{i=1}^{256} p_i log_2^{p_i}
+\end{equation}
+
+\subsubsection{密钥随机性}
+
+本文使用NIST（National Institute of Standards and Technology，NIST）随机性测试来评估密钥的随机性\cite{bassham2010statistical}。NIST随机性测试通过多个维度测试密钥的随机性\cite{zaman2012review}。NIST官网包含了16项统计测试，每项测试会对给定比特序列做在随机性假设下的卡方检验，其将$\chi^2$值转换为随机性概率，即程序中的P值，表示随机性的可能性大小。表\ref{NIST-schemes}为NIST随机性测试的16项测试手段。
+
+% 参考
+
+\begin{table}[]
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    方法 & 参数要求 & 原理 & 不通过原因 \\ \hline
+    频数检验 & N $\geq$ 100bit & 序列中1和0数目是否相近 & 说明1和0数目相差过多  \\ \hline
+    块内频数检验 & N $\geq$ 100bit 子块 M > 0.01N & M位子块中1的个数是否接近m/2 & 至少某一个子块0、1比例不均衡 \\ \hline
+    游程检验 & 合法通信双方通过设计编码和信道特性避免泄露信息 & 实现复杂 & 信息论安全；无需密钥的安全传输  \\ \hline
+    基于密钥的安全机制 & 合法通信双方利用信道的随机性生成密钥 & 易实现 & 信息论安全；轻量；无需第三方参与 \\ \hline
+    \end{tabular}
+    \caption{NIST测试
+    \label{NIST-schemes}}
+\end{table}
 
 \chapter{TDD系统信道探测系统研究设计}
 \chapter{FDD系统信道探测系统研究设计}

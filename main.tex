@@ -285,7 +285,7 @@ todo
 
 同时，M序列的自相关函数为，
 
-\begin{equation}
+\begin{equation} \label{m_self}
     R_m(\tau) = \left\{
   \begin{aligned}
   &1, &\tau = 0, N, 2N, ... \\
@@ -566,12 +566,15 @@ CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI�
 
 在TDD通信系统中，考虑一对合法用户Alice和Bob在多径衰落信道工作，通信双方互相发送已知导频信号。在想干时间$\tau$内，通信双方发送的信号经过相同信道衰落到达对方。接收方由接收的导频信号与已知导频信号估计$\tau$这段时间内的信道。
 
+
+% TODO 是否要加入纠错码这一块的详细设计和解释
+% TODO 是否要加入GNURadio流式处理数据的pc和usrp之间的交互图
 \section{导频信号}
 
 \subsection{粗同步}
 通信双方Alice和Bob均需要发送导频信号用于在通信过程中估计信道所用。在信道探测步骤中，为了可以更快的检测出指定信号，本文在导频信号首尾分别添加一段正弦波，如果检测到指定长度信号的首尾两端出现指定频率的正弦波，则说明该段信号是指定导频信号，将其存储供信道估计使用。
 
-本文将以上步骤称为粗同步。设Alice发射导频信号为$Frame_a$，长度为$L_a$，$Frame_a$中首尾两端正弦波频率为$F_a$，检测阈值为$R_a$，fft长度为$L_d$，正弦波长度为$L_{sine_a}$。设Bob发射导频信号为$Frame_b$，长度为$L_b$，$Frame_b$中首尾两端正弦波频率为$F_b$，检测阈值为$R_b$，fft长度为$L_d$，正弦波长度为$L_{sine_b}$。GNURadio中处理数据的形式是数据流的形式，以Bob为例，接收数据流$S_a$对每段数据流输入，均会有数据流输出，本文对每L个长度的复数点做fft得到频域响应$H_{detect_a}$，并检查$ L_d - L_d / F_a $处幅值是否大于阈值$R_a$。即，在数据流$S_a$的位置i处计算，
+本文将以上步骤称为粗同步。设Alice发射导频信号为$Frame_a$，长度为$L_a$，$Frame_a$中首尾两端正弦波频率为$F_a$，检测阈值为$R_a$，fft长度为$L_d$，正弦波长度为$L_{sine_a}$。设Bob发射导频信号为$Frame_b$，长度为$L_b$，$Frame_b$中首尾两端正弦波频率为$F_b$，检测阈值为$R_b$，fft长度为$L_d$，正弦波长度为$L_{sine_b}$。GNURadio中处理数据的形式是高速实时数据流的形式，以Bob为例，接收数据流$S_a$对每段数据流输入，均会有数据流输出，本文对每L个长度的复数点做fft得到频域响应$H_{detect_a}$，并检查$ L_d - L_d / F_a $处幅值是否大于阈值$R_a$。即，在数据流$S_a$的位置i处计算，
 
 \begin{equation}
     H_{detect_a} = FFT(S_a[i, i+L_d])
@@ -593,9 +596,55 @@ CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI�
     FFT(S_a[i+L_a-L_{sine_a}, i+L_a-L_{sine_a}+L_d])[L_d - L_d / F_a] \geq R_a 
 \end{equation}
 
-那么，数据流$S_a$的位置$i$处和位置$i+L_a-L_{sine_a}$之间的数据即Bob需要检测得到的、Alice发射的导频信号，将这之间的信号保存下来。
+那么，数据流$S_a$的位置$i$处和位置$i+L_a-L_{sine_a}$之间的数据即Bob需要检测得到的、Alice发射的导频信号，将这之间的信号保存下来。对于Alice来说，同理。
 
-本文使用伪随机性序列（PN序列）作为精确同步和信道估计所用序列，由于m序列是PN序列中的一种，并且具有良好的自相关特性，所以本文使用m序列作为导频信号的主体部分。为了消除符号间干扰（Inter-Symbol-Interference，ISI），在m序列后面添加循环前缀（Cyclic Prefix, CP）。
+粗同步步骤出现在GNURadio检波程序中，相对于传统的相关检波，其时间复杂度更低。在检测过程中，会对每$L$长度的信号段做阈值检测，当出现前后两端正弦波并且间隔满足指定导频信号的要求时，即检测到导频信号，其过程如图\ref{detect_wave_algm}所示。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/detect_wave_algm}
+    \caption{粗同步检波}{} % Crc Reconciliation
+    \label{detect_wave_algm}
+\end{figure}
+
+
+\subsection{精同步}
+
+在粗同步中，检波模块将检测到的导频信号转存到硬盘中，转存到硬盘的导频信号首尾两端是不完整的正弦波，首尾两端正弦波长度之和应该是$L_{sine_a}$，但是首部和尾部分别多长无法得知，因此需要进一步精确同步。
+
+本文使用伪随机性序列（PN序列）作为精确同步和信道估计所用序列，由于m序列是PN序列中的一种，并且具有良好的自相关特性，所以本文使用m序列作为导频信号的主体部分。为了消除符号间干扰（Inter-Symbol-Interference，ISI）和载波间干扰（Inter-Carrier-Interference，ICI），在m序列后面添加循环前缀（Cyclic Prefix, CP）充当保护间隔，CP指的是将m序列的前面一部分复制到后段。
+
+% TODO 加入仿真和实际测量中m序列自相关的图片
+因为精同步发生在导频信号检测并转存之后，对实时性要求不高，因此本文利用m序列的自相关特性来精确切割导频信号。m序列的自相关函数是公式（\ref{m_self}）所示周期性的二值函数，m序列的自相关函数时域上与冲激函数相近，在完全重合的周期点会出现波峰，并且随着m序列周期增加，m序列的随机性越好。设通信方转存的导频信号为$Rx$，包含的m序列理想情况为$m$，长度为$L_m$，第一段正弦波的完整长度为$L_{sine}$，那么可以遍历导频信号的起始一段，通过与已知原始m序列共轭相乘相加，求出波峰$Peak$并保存波峰位置i，
+
+\begin{equation}
+    Peak = max\{\frac{\sum_{k = i}^{L_m} \bar{m(k})\times Rx(i + k)}{L_m}) \}, i \in \{1, .., L_m + L_{sine}\}
+\end{equation}
+
+其中$\bar{\dot}$为取共轭。波峰$Peak$处对应的位置$i$就是精同步的结果，即m序列的起始位置，计算出m序列起始的精确位置，便可以进一步通过m序列或者其他数据段进行信道估计步骤。
+
+图\ref{practical_pilot_m_seq}为系统转存的实际导频信号，其中包含第一段检波所用正弦波，以及m序列。通信方已知m序列原始信号如图\ref{m_seq}所示。图\ref{m_corr_practical}展示在实际系统中，转存信号中与已知m序列做相关的结果，其中根据波峰位置可以精确定位导频信号中m序列的起始位置。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/practical_pilot_m_seq}
+    \caption{实际导频信号中的m序列}{} % Crc Reconciliation
+    \label{practical_pilot_m_seq}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/m_seq}
+    \caption{理想情况下的m序列}{} % Crc Reconciliation
+    \label{m_seq}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/m_corr_practical}
+    \caption{理想和实际中m序列自相关}{} % Crc Reconciliation
+    \label{m_corr_practical}
+\end{figure}
 
 \section{基于导频信号TDD收发系统设计}
 

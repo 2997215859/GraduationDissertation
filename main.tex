@@ -628,14 +628,14 @@ CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI�
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{images/practical_pilot_m_seq}
-    \caption{实际导频信号中的m序列}{} % Crc Reconciliation
+    \caption{实际导频信号中的m序列}{} 
     \label{practical_pilot_m_seq}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{images/m_seq}
-    \caption{理想情况下的m序列}{} % Crc Reconciliation
+    \caption{理想情况下的m序列}{} 
     \label{m_seq}
 \end{figure}
 
@@ -647,6 +647,101 @@ CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI�
 \end{figure}
 
 \section{基于导频信号TDD收发系统设计}
+
+本节阐述基于导频信号的TDD收发系统设计，从理论以及实现的角度详细介绍系统的构造。导频收发机是基于GNURadio搭建的，数据采集由USRP部分负责，USRP射频前端将数据转换到基带信号，并送入通用计算机中处理数据，实际上检波部分运行在计算机内，USRP将基带数据通过网口送入计算机内，计算机程序再去处理高速的数据流，并从中检测出导频信号。导频收发机是本系统最核心的部分，负责导频信号的发射、检测和转存。具体来说，由四个GNU Radio模块构成：导频序列输出模块、数据发射模块、数据接收模块、导频信号检测模块。以下会详细介绍四个模块的实现。
+
+\subsection{导频序列输出模块}
+
+导频序列输出模块，可以理解为导频信号生成的模块，为方便起见，事先已经生成好导频信号存储在文件中，该模块可以直接读取该文件并送到输出端口。这种类型模块在GNURadio称作输出模块，输出模块无输出端口、有输出端口。本文为其设计了一个控制信号，即\ref{file_source_roi}图中所示$Tx\_File$这个布尔量，该模块内部有一状态量$Tx\_File\_$表示该模块是否正在发射数据。
+
+\begin{itemize}
+    \item 当$Tx\_File$设置为$True$时，该模块会检查$Tx\_File\_$变量查看当前是否输出数据。如果正在输出数据，则不做任何事情；如果不在输出数据，则会读取导频信号文件并送出到输出端口，当数据输出完成时，将$Tx\_File\_$设置为$False$
+    \item 当$Tx\_File$设置为$False$时，该模块的输出端口不会输出任何数据。
+\end{itemize}
+
+因此，上层程序只需要控制$Tx\_File$这个变量，就可以控制导频信号的发射与否。将$Tx\_File$置为$True$，则会向输出端口送出导频信号（如果当前模块不在发射的话），置为$False$，则会立即停止输出任何数据。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/file_source_roi}
+    \caption{导频序列输出模块}{} 
+    \label{file_source_roi}
+\end{figure}
+
+\subsection{数据发射模块}
+
+% 参考 https://zhuanlan.zhihu.com/p/24217098
+
+数据发射模块是直接使用了GNURadio自带的模块$UHD: USRP\quad Sink$，其属于GNURadio的$gr-uhd$系列，该模块用于将数据采样点送入USRP设备中，USRP设备会将其调制发射到指定频率。其参数如图\ref{usrp_sink}所示。
+
+该模块实际是计算机端的控制平台，其实际执行是由USRP中的FPGA以及相关器件实现实现。该模块需要将基带数据通过USB口或者网口送入到USRP中去，如图\ref{usrp_sink_theory}所示为PC端与USRP端的交互。该模块属于计算机端的上层应用程序，使用C++或者Python编写，调用UHD驱动程序和系统调用，控制硬件接口的数据读写。PC与USRP的交互使用USB3.0或者以太网网口，目前大部分外设均使用USB3.0或者千兆以太网网口传输数据，来保证输出速率，满足实时性，USB3.0的速率可达到500MBps\cite{wei2016software}。
+
+在发射数据时，进程从用户态切换到内核态，通过系统调用控制网卡或USB的读写。通过以太网网口或者USB口，将数据送入到USRP内部。USRP内部的处理分为三个部分。
+
+\begin{itemize}
+    \item 首先，发送控制模块和数字上变频模块（DUC）为了处理速度足够快，采用FPGA实现。发送控制模块控制USRP的发送时序。DUC模块用于基带数据上变频到中频\cite{xiong2015open}。
+    \item 其次，中频数字信号经过DAC器件数模转换得到模拟域的数据，再进一步进行模拟域的信号处理
+    \item 模拟域中，信号先经过低通滤波器得到更加平滑的信号，再与晶振信号相乘，将中频信号调制到指定射频频点，最后射频信号经过功率放大器发射出去。
+\end{itemize}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/usrp_sink}
+    \caption{数据发射模块}{} 
+    \label{usrp_sink}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/usrp_sink_theory}
+    \caption{数据发射时USRP内部示意图}{} 
+    \label{usrp_sink_theory}
+\end{figure}
+
+\subsection{数据接收模块}
+
+数据接收模块也是直接使用了GNURadio内置的模块，同属于$gr-uhd$的模块集，该模块和$UHD: USRP\quad Sink$作用相反，其作用是通过USB口或者千兆以太网网口从USRP中获取基带数据，并送入到输出端口。其参数如图\ref{usrp_source}所示。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/usrp_source}
+    \caption{数据接收模块}{} 
+    \label{usrp_source}
+\end{figure}
+
+和$UHD: USRP\quad Sink$类似，该模块属于进程中的用户态部分，其在运行时会切换到内核态，并从与USRP相连接的以太网网口或者USB口读取高速数据。如图\ref{}所示为USRP在接收数据时与PC的交互。在接收数据时，USRP外设同样分为三个阶段处理信号，
+
+\begin{itemize}
+    \item 首先，信号经过低噪声放大器，避免将噪声放的过大。之后与晶振信号相乘，下变频到中频，再通过低通滤波器使得信号更加平滑。
+    \item 其次，中频模拟信号通过ADC器件模数转换为数字信号。再进一步进行数字域的处理。
+    \item 中频数字信号通过数字下变频，得到基带信号，再通过接收控制模块。为了速率保障，数字下变频模块和接收控制模块同样使用FPGA实现，接收控制模块控制USRP的接收行为。
+\end{itemize}
+
+USRP处理得到数字基带信号之后，通过以太网网口或者USB口，将数据送入PC中并触发中断，或者通知上层程序数据可读。PC中的上层程序陷入内核态，调用UHD驱动程序和系统调用从以太网网口或者USB口读取数据，然后返回用户态进一步处理数据。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/usrp_source_theory}
+    \caption{数据接收时USRP内部示意图}{} 
+    \label{usrp_source_theory}
+\end{figure}
+
+\subsection{导频信号检测模块}
+
+导频信号检测模块从数据接收模块中读取基带数据流，并按照上述粗同步的方式，通过fft检测指定间隔的两段信号是否为指定频率的正弦波，若是，则判断为需要检测的导频信号，将其转存到磁盘上，供之后信道估计使用。这种类型模块在GNURadio称作输入模块，输入模块无输出端口、有输入端口。
+
+本文在设计该模块时提供了诸多模块参数，如图\ref{file_sink_roi}所示。其中各参数的意义为，
+
+% \begin{itemize}
+% \end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/file_sink_roi}
+    \caption{导频信号检测模块}{} 
+    \label{file_sink_roi}
+\end{figure}
 
 \chapter{FDD系统信道探测系统研究设计}
 

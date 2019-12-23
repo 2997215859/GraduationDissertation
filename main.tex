@@ -710,7 +710,7 @@ CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI�
     \label{usrp_source}
 \end{figure}
 
-和$UHD: USRP\quad Sink$类似，该模块属于进程中的用户态部分，其在运行时会切换到内核态，并从与USRP相连接的以太网网口或者USB口读取高速数据。如图\ref{}所示为USRP在接收数据时与PC的交互。在接收数据时，USRP外设同样分为三个阶段处理信号，
+和$UHD: USRP\quad Sink$类似，该模块属于进程中的用户态部分，其在运行时会切换到内核态，并从与USRP相连接的以太网网口或者USB口读取高速数据。如图\ref{usrp_source_theory}所示为USRP在接收数据时与PC的交互。在接收数据时，USRP外设同样分为三个阶段处理信号，
 
 \begin{itemize}
     \item 首先，信号经过低噪声放大器，避免将噪声放的过大。之后与晶振信号相乘，下变频到中频，再通过低通滤波器使得信号更加平滑。
@@ -733,14 +733,33 @@ USRP处理得到数字基带信号之后，通过以太网网口或者USB口，�
 
 本文在设计该模块时提供了诸多模块参数，如图\ref{file_sink_roi}所示。其中各参数的意义为，
 
-% \begin{itemize}
-% \end{itemize}
+\begin{itemize}
+    \item $Sine Freq$为该模块需要检测的导频信号首尾两端正弦波的频率
+    \item $Threshold$为通过fft判断能量时所用阈值
+    \item $FFT Size$为检波是所做fft长度
+    \item $Rev-Send latency$为检测到导频信号与回发导频信号之间的时间间隔
+\end{itemize}
+
+通信双方的收发机中都有该模块。不同的是，当该模块检测到对端发射的导频信号，Bob会触发信号事件，将导频序列输出模块中的$Tx\_File$设置为$True$，发射Bob端的导频信号。Alice的导频信号检测模块收到Bob发射的导频信号之后，并不会再次发射信号，而是继续本次信道探测的后续过程，直到该次密钥生成过程完成，上层程序才会控制导频序列输出模块再次发射信号。
 
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{images/file_sink_roi}
     \caption{导频信号检测模块}{} 
     \label{file_sink_roi}
+\end{figure}
+
+\subsection{导频信号收发机的整体结构}
+
+本文基于上述四个GNURadio模块搭建导频信号收发机，整体结构如图\ref{two_tranceiver_structure2}所示。上层程序通过控制Alice的导频序列发射模块，发射导频信号，将导频信号调制到指定频点，并通过USRP射频前端发射导频信号。Bob使用导频信号检测模块不断检测导频信号，当检测到指定导频信号时，转存到磁盘，并触发导频信号发射事件，通知发射机中的导频序列发射模块发射导频信号，Bob端的发射机发射导频信号之后，Alice端接收机中的导频信号检测模块可以检测到Bob端发射的导频信号，并转存导频信号到磁盘。一次信道探测过程完成。
+
+实际上，检测算法由于阈值设定过高或者过低，有可能检测不到对方发射的导频信号或者将错误的信号数据误认为导频信号。因此Alice端设计了重发机制。在一次信道探测过程中，Alice会每隔一定时间，重新发射一次导频信号，直到检测到Bob回发的导频信号。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/two_tranceiver_structure2}
+    \caption{TDD导频收发机设计}{} 
+    \label{two_tranceiver_structure2}
 \end{figure}
 
 \chapter{FDD系统信道探测系统研究设计}

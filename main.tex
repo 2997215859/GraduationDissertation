@@ -764,9 +764,51 @@ USRP处理得到数字基带信号之后，通过以太网网口或者USB口，�
 
 \chapter{无线信道密钥生成流程}
 
+本章将详细的介绍无线密钥生成系统设计和实现的具体细节，介绍上层应用利用导频信号收发机实现信道探测的过程。% TODO 补完介绍
+
 \section{TDD/FDD系统信道探测系统研究设计}
 
-\section{信道探测}
+在上一章节中，本文介绍了如何利用GNURadio设计密钥生成系统所需要的模块搭建导频信号收发机，导频信号收发机使用如图\ref{tranceiver_structure}四个模块完成TDD/FDD系统中信号的发送和接收。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/tranceiver_structure}
+    \caption{导频信号收发机}{} 
+    \label{tranceiver_structure}
+\end{figure}
+
+对于TDD系统来说，Alice与Bob之间的信道探测过程如图\ref{two_tranceiver_structure}所示。对于FDD系统来说，Alice与Bob之间的信道探测过程如图\ref{two_tranceiver_structure2}所示。TDD和FDD系统中不同的地方在于，TDD系统的通信双方在同一个频点上发射和接收导频信号，而FDD系统的通信双方在不同的频点上发射和接收导频信号。
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/two_tranceiver_structure}
+    \caption{TDD系统中的信道探测}{} 
+    \label{two_tranceiver_structure}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/two_tranceiver_structure_fdd}
+    \caption{FDD系统中的信道探测}{} 
+    \label{two_tranceiver_structure_fdd}
+\end{figure}
+
+TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有检测到Master端发射的导频信号，才会发射导频信号，因此Slave端的导频信号检测模块和导频序列输出模块之间存在信号事件。FDD系统中，通信双方的地位是对等的，不分主从，Slave发射导频信号是不受Master影响的，因此导频信号检测模块和导频序列输出模块之间也不存在信号事件。
+
+为了实现信号事件，本文使用GNURadio中$gr::basic_block$提供的消息传递接口。在GNURadio中，$gr::basic_block$是所有模块的父类，模块也会区分输入和输出端口。该类提供了消息订阅与通知机制，如果某个模块注册了某个端口，那么当该模块在该端口发布消息时，任何订阅该模块同名端口的模块都会收到该消息并根据消息类型作出不同的响应行为。实际上，当模块在某端口发布消息时，该模块会迭代所有订阅同名端口的模块，并调用成员方法将消息压入到订阅模块的消息队列中去，如图\ref{message_passing}所示。本文实现了导频信号检测模块和导频序列输出模块之间的消息通知，并加入延迟这一参数观察不同延迟时间下信道和密钥生成的结果。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/message_passing}
+    \caption{消息传递接口}{} 
+    \label{message_passing}
+\end{figure}
+
+\section{信道估计}
+
+本文使用的导频信号如图\ref{}所示，系统检波得到的导频信号如图\ref{}所示。在密钥生成协议中，通信双方均已得知导频信号的组成部分，因此可以通过已知导频信号和接收导频信号估计得到信道。
+
 \section{特征量化}
 \section{信息调和}
 \section{隐私放大}

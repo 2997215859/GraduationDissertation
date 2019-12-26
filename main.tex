@@ -866,7 +866,7 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
     \epsilon(\tau) = \tilde{p(\tau)} / \tau
 \end{equation}
 
-最终频率补偿因子为$\epsilon(\tau)$的平均值$\bar{\epsilon}$，并通过其方差判断该补偿因子是否误差较大，如果较大则舍弃不用。因为有首尾两段正弦波，通过这两端正弦波分别估计出$\bar{\epsilon}_1$和$\bar{\epsilon}_2$，以及对应的方差$\sigma_1$和$\sigma_2$。如果$\sigma_1$和$\sigma_2$均大于阈值$Threshold_{sigma}$，则取其平均数作为补偿因子；如果$\sigma_1$和$\sigma_2$均小于阈值$Threshold_\sigma$，则均舍弃不用；如果一大一小，则取其中满足大于阈值的因子作为补偿因子。
+最终频率补偿因子为$\epsilon(\tau)$的平均值$\bar{\epsilon}$，并通过其方差判断该补偿因子是否误差较大，如果较大则舍弃不用。因为有首尾两段正弦波，通过这两端正弦波分别估计出$\bar{\epsilon}_1$和$\bar{\epsilon}_2$，以及对应的方差$\sigma_1$和$\sigma_2$。如果$\sigma_1$和$\sigma_2$均大于阈值$Threshold_{\sigma}$，则取其平均数作为补偿因子；如果$\sigma_1$和$\sigma_2$均小于阈值$Threshold_\sigma$，则均舍弃不用；如果一大一小，则取其中满足大于阈值的因子作为补偿因子。
 
 另外可以利用两端正弦波一起做频偏估计，即对相隔距离为$\tau_{12}$、长度均为$N$的正弦波$Sine_1$和$Sine_2$综合起来作，
 
@@ -881,6 +881,24 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
 \begin{equation}
     \epsilon = p / \tau_{12}
 \end{equation}
+
+
+\subsection{信道补偿和估计}
+
+通过频偏估计得到补偿因子$\epsilon$，则对信号$S(k)$补偿的结果为，
+
+\begin{equation}
+    \tilde{S(k)} = S(k) * e^{2\pi \epsilon k}
+\end{equation}
+
+
+从信道补偿之后的导频信号中截取m序列$\tilde{m(k)}$，并和已知原始信号$m(k)$进行信道估计，
+
+\begin{align}
+    h(k) & = & \sum_{i=1}^{L_m} \tilde{m(i)} \times m( (i + k) mod L_m ) \\
+    H(k) & = & FFT(h(k))
+\end{align}
+
 
 
 \section{特征量化}

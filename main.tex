@@ -849,9 +849,9 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
 在接收的导频信号中，可以使用首尾两端的正弦波来进行频偏估计。假设利用正弦波中的$Sine(k)$部分进行频率估计，对于间隔点数$\tau$来说，对载波频偏进行粗估计，有
 
 \begin{align}
-    z(\tau) & = \frac{1}{N - \tau} \sum_{i = 1}^{N-\tau} \bar{x(i)} \times x(i + \tau) \\
-    & = \frac{1}{N-\tau} \sum_{i = 1}^{N-\tau} e^{-jwi} e^{jw(i+\tau)} \\
-    & = \frac{1}{N-\tau} \sum_{i = 1}^{N-\tau} e^{jw\tau}
+    z(\tau) & = \frac{1}{N - \tau} \sum_{i = 1}^{N-\tau} \bar{Sine(i)} \times Sine(i + \tau) \\
+    & = \frac{1}{N-\tau} \sum_{i = 1}^{N-\tau} e^{-jwi\epsilon} e^{jw(i+\tau)\epsilon} \\
+    & = \frac{1}{N-\tau} \sum_{i = 1}^{N-\tau} e^{jw\tau\epsilon}
 \end{align}
 
 本文计算了$L_{\tau} = 5$次粗估计，即$\tau \in \{1,..., L_{\tau}\}$，并求出相位值phase
@@ -871,8 +871,21 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
 另外可以利用两端正弦波一起做频偏估计，即对相隔距离为$\tau_{12}$、长度均为$N$的正弦波$Sine_1$和$Sine_2$综合起来作，
 
 \begin{equation}
-    z = \frac{1}{N} \sum_{i=1}^N Sine_1(i) * \tilde{Sine_2(i)}
+    z = \frac{1}{N} \sum_{i=1}^N Sine_1(i) \times \tilde{Sine_2(i)}
 \end{equation}
+
+由于，
+
+\begin{equation}
+    Sine_2(i) = Sine_1(i - \tau{12})
+\end{equation}
+
+则
+
+\begin{align}
+    z = & \frac{1}{N} \sum_{i=1}^N e^{-jwi\epsilon} e^{jw(i+\tau_{12})\epsilon} \\
+      = & \frac{1}{N} \sum_{i=1}^N e^{jw\tau_{12}\epsilon} \\
+\end{align}
 
 \begin{equation}
     p = \frac{1}{2\pi} tan^{-1} \frac{Im(z)}{Re(z)} 
@@ -883,23 +896,35 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
 \end{equation}
 
 
-\subsection{信道补偿和估计}
+\subsection{信道补偿}
 
-通过频偏估计得到补偿因子$\epsilon$，则对信号$S(k)$补偿的结果为，
+通过频偏估计得到补偿因子$\epsilon$，本文采用频率补偿的方法是直接对原信号补偿，即在离散傅里叶变换进行频率偏移的补偿，则对信号$S(k)$补偿的结果为，
 
 \begin{equation}
     \tilde{S(k)} = S(k) * e^{2\pi \epsilon k}
 \end{equation}
 
+\subsection{信道估计}
 
-从信道补偿之后的导频信号中截取m序列$\tilde{m(k)}$，并和已知原始信号$m(k)$进行信道估计，
+从频偏补偿之后的导频信号中截取m序列$\tilde{m(k)}$，并和已知原始信号$m(k)$进行信道估计，
 
-\begin{align}
-    h(k) & = & \sum_{i=1}^{L_m} \tilde{m(i)} \times m( (i + k) mod L_m ) \\
-    H(k) & = & FFT(h(k))
-\end{align}
+\begin{equation}
+    h(k) = \sum_{i=1}^{L_m} \tilde{m(i)} \times m( (i + k) mod L_m )
+\end{equation}
 
+通过fft得到频域响应，然后移除直流分量，再滑动平均，最终得到信道估计的结果。
 
+\begin{equation}
+    H(k) = MA(FFT(h(k)))
+\end{equation}
+
+如图\ref{ma_before_after_res}是平滑前和平滑后的频率响应结果。
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/ma_before_after_res} 
+    \caption{平滑前后CSI结果}
+    \label{ma_before_after_res}
+\end{figure}
 
 \section{特征量化}
 \section{信息调和}

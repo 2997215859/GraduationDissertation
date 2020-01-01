@@ -985,7 +985,27 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
 
 \subsection{基于纠错码的调和方法}
 
-todo
+本文使用了两种纠错码，Turbo码和BCH码。
+
+\subsubsection{Turbo码}
+
+Turbo码于1993年由Claude Berrou等人提出，其实现方式以时间换取逼近香农极限的性能。Turbo码的编码器和解码器如图\ref{turbo_encode}和\ref{turbo_decode}所示。
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/turbo_encode} 
+    \caption{Turbo编码}
+    \label{turbo_encode}
+\end{figure}
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/turbo_decode} 
+    \caption{Turbo解码}
+    \label{turbo_decode}
+\end{figure}
+
+本文使用怎么样怎么样的纠错码，其性能在巴拉巴拉。
+
+\subsubsection{BCH码}
 
 \section{隐私放大}
 

@@ -985,11 +985,11 @@ TDD系统中，通信双方分Master和Slave端。Slave端的检波模块只有�
 
 \subsection{基于纠错码的调和方法}
 
-本文使用了两种纠错码，Turbo码和BCH码。
+本文使用了两种纠错码，Turbo码和BCH码。首先Alice会生成随机数作为密钥，并使用Turbo码或者BCH码进行纠错编码，再异或CSI量化出的密钥比特流。之后将其发送给Bob，Bob将其和比特流异或，再进行纠错解码。除了Turbo和BCH码之外，还有LDPC码等方式。
 
 \subsubsection{Turbo码}
 
-Turbo码于1993年由Claude Berrou等人提出，其实现方式以时间换取逼近香农极限的性能。Turbo码的编码器和解码器如图\ref{turbo_encode}和\ref{turbo_decode}所示。
+Turbo码于1993年由Claude Berrou等人提出，其实现方式以时间换取逼近香农极限的性能。Turbo码的编码器和解码器如图\ref{turbo_encode}和\ref{turbo_decode}所示。Turbo码的译码算法包括MAP算法、LOG-MAP算法、Max-Log-MAP算法和SOVA算法，本文使用LOG-MAP和SOVA算法来进行译码。另外迭代次数也会影响译码算法，迭代次数越高，对信息比特的估计就越精确，但是迭代次数到达一定数值之后，译码性能改善太小。
 
 \begin{figure}[htbp!]
     \centering \includegraphics[width=0.9\textwidth]{images/turbo_encode} 
@@ -1003,11 +1003,62 @@ Turbo码于1993年由Claude Berrou等人提出，其实现方式以时间换取�
     \label{turbo_decode}
 \end{figure}
 
-本文使用怎么样怎么样的纠错码，其性能在巴拉巴拉。
 
 \subsubsection{BCH码}
 
+BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-Chaudhuri与Hocquenghem的缩写，是一种循环纠错码，BCH码能灵活地选择码参数，如分组长度和码率，当分组长度为几百或者更少时，BCH码被公认为同样分组长度和码率的编码中最好的码之一。
+
+对于任意的正整数m（$m \leq 3 $）和t （$ t < \frac{2^m - 1}{2} $），存在二进制BCH码满足，
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    块长度 & $ n = 2^m - 1 $  \\ \hline
+    消息比特数 & $ k \leq n - mt $  \\ \hline
+    最小距离 & $ d_{min} \leq 2t + 1 $  \\ \hline
+    \end{tabular}
+    \caption{
+    \label{}}
+\end{table}
+
+则该BCH码可以检测和纠正多达t个随机的误码。设$\alpha$为有限域$GF(2^m)$的本原根。则长度$2^m - 1$、t纠错能力的BCH码的生成多项式$g(x)$是$GF(2)$上根为$\alpha$、${\alpha}^2$、${\alpha}^3$、...、${\alpha}^{2t}$的极小多项式。设$\phi_i(x)$是$\alpha^i$的极小多项式。那么$g(x)$一定是$\phi_1(x)$、$\phi_2(x)$...$\phi_{2t}(x)$最小公倍数。即，
+
+\begin{equation}
+    g(x) = LCM\{\phi_1(x), \phi_2(x), ... , \phi_{2t}(x)\}
+\end{equation}
+
+如果i是偶数，那么可以表示成乘积形式，
+
+\begin{equation}
+    i = i'2^l
+\end{equation}
+
+其中$i'$是奇数，并且$l \leq 1$，则$\alpha^i = (\alpha^{i'})^{2^l}$是$\alpha^{i'}$的共轭，因此$\alpha^i$和$\alpha^{i'}$有相同极小多项式，因此，
+
+\begin{equation}
+    \phi_i(x) = \phi_{i'}(x)
+\end{equation}
+
+因此，$\alpha$的偶数方和$\alpha$的奇数方有相同的极小多项式，故，
+
+\begin{equation}
+    g(x) = LCM\{\phi_1(x), \phi_3(x), ... , \phi_{2t-1}(x)\}
+\end{equation}
+
+由于$ deg[\phi_i(x)] \leq m $，所以$ deg[g(x)] \leq mt $，所以 $ n -k \leq mt $。这意味着校验位的个数$n - k $最多为$mt$。当$t$非常小时，$n - k $和$mt$十分相近。
+
+当纠错单个误码时，即汉明码。此时$g(x) = \phi_1(x)$并且$t = 1$，因为$\alpha$是$GF(2^m)$域上的本原元素，所以$\phi_1(x)$是阶数m的本原多项式，此时，
+
+\begin{equation}
+    \alpha_{2^0}, \alpha_{2^1}, \alpha_{2^2}, ..., \alpha_{2^m} = 1
+\end{equation}
+
+所以长度为$2^m - 1$、可以纠错1个误码的BCH码就是汉明码。
+
 \section{隐私放大}
+
+在信道探测阶段和信息调和阶段，所有交互信息对任何第三方都是可见的，这些信息中携带密钥信息，因此需要进一步进行隐私放大。通常使用哈希函数来进行隐私放大，哈希函数的单向性使得窃听者无法从公开信息中分析出密钥信息。常见的哈希函数有MD5、SHA（Secure Hash Algorithm）算法等等。本文使用SHA-2来作隐私放大，Alice和Bob将调和得到的会话密钥分别送入哈希函数，得到512比特的密钥值。
 
 \chapter{实验和数据}
 

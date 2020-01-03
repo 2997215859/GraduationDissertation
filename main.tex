@@ -1066,7 +1066,21 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \section{实验平台}
 
-本文使用GNURadio软件无线电套件开发无线密钥生成系统：信道测量部分基于USRP外设发射和接收数据，特征量化、信息调和、隐私放大在PC中处理完成，信息调和的信息交互在无线局域网中完成。GNURadio版本为3.7.11，使用USRP N210。  
+本文使用GNURadio软件无线电套件开发无线密钥生成系统：信道测量部分基于USRP外设发射和接收数据，特征量化、信息调和、隐私放大在PC中处理完成，信息调和的信息交互在无线局域网中完成。本使用GNURadio版本为3.7.11，使用三台USRP N210作为外设。USRP N210可以提供高带宽、高动态范围处理能力。USRP N210拥有Xilinx® Spartan® 3A-DSP 3400 FPGA，100 MS/s的双ADC，400 Ms/s的双DAC，和PC处理器之间通过千兆以太网连接用于通信，USRP N210和主机之间的通信速度可达50 MS/s。USRP N210可以工作在0~6GHz，并且拥有允许多个USRP N210同步构建MIMO的扩展端口。
+
+如图\ref{system-three}所示，实验中分Alice、Bob、Eve三个角色，Alice和Bob是合法通信方，Eve是窃听者。如图\ref{}所示，每一台PC均和一台USRP N210配置在同一个有线局域网内，PC和USRP之间依靠千兆以太网网口传输数据。
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/system-three}
+    \caption{无线密钥生成系统平台}
+    \label{system-three}
+\end{figure}
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/system-usrp}
+    \caption{PC和USRP N210}
+    \label{system-usrp}
+\end{figure}
 
 \section{场景架构与分析}
 

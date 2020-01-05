@@ -10,6 +10,9 @@
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{graphicx}
+
 
 \floatname{algorithm}{算法}
 \renewcommand{\algorithmicrequire}{\textbf{输入:}}
@@ -440,13 +443,13 @@ Bob检测的时域信号为，
 
 那么Alice和Bob之间CSI相关性为，
 
-\begin{equation}\label{equation_corr}
+\begin{equation}\label{equation_corr_ab}
     Reprocity_{ab, ba} = \frac{E[(\tilde{H}_{ab}-\mu_{\tilde{H}_{ab}})(\tilde{H}_{ba}-\mu_{\tilde{H}_{ba}})]}{\sigma_{\tilde{H}_{ab}}\sigma_{\tilde{H}_{ba}}}
 \end{equation}
 
 为研究Eve窃听的CSI结果与合法信道的CSI结果的差异，计算Eve的CSI和Alice的CSI相关性，
 
-\begin{equation}\label{equation_corr}
+\begin{equation}\label{equation_corr_ae}
     Reprocity_{ab, ae} = \frac{E[(\tilde{H}_{ab}-\mu_{\tilde{H}_{ab}})(\tilde{H}_{ae}-\mu_{\tilde{H}_{ae}})]}{\sigma_{\tilde{H}_{ab}}\sigma_{\tilde{H}_{ae}}}
 \end{equation}
 
@@ -480,7 +483,7 @@ $Reprocity_{ab, ae}$越小表明第三方可以窃听的信息越少，CSI相关
 
 通过$I_{sk}$与$I_k$的比例来评估信息未泄露的比率，
 
-\begin{equation}
+\begin{equation} \label{safe_rate_equation}
   \eta = I_{sk} / I_k
 \end{equation}
 
@@ -1119,14 +1122,6 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 本文在如图\ref{sketch_scene}所示的室内房间、室内走廊、空旷室外三种场景下使用无线密钥生成系统，并在不同场景下设计三种信道环境，
 
-\begin{itemize}
-    \item \textbf{方式1} 不干扰信道
-    \item \textbf{方式2} 行人在周围环境随机移动
-    \item \textbf{方式3} 收发机小范围内移动   
-\end{itemize}
-
-因此本文分别在TDD和FDD模式下，测量了9种实际情况下的信道环境，并分析无线密钥生成系统的可靠性和安全性。以下将分别探讨TDD和FDD模式下，无线密钥生成系统的性能。
-
 \begin{figure}
     \centering
     \subfigure[室内]{
@@ -1144,10 +1139,25 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
     \caption{室内、走廊和室外的示意图}{}
     \label{sketch_scene}
 \end{figure}
+
+\begin{itemize}
+    \item \textbf{方式1} 不干扰信道
+    \item \textbf{方式2} 行人在周围环境随机移动
+    \item \textbf{方式3} 收发机小范围内移动   
+\end{itemize}
+
+因此本文分别在TDD和FDD模式下，测量了9种实际情况下的信道环境，并分析无线密钥生成系统的可靠性和安全性。以下将分别探讨TDD和FDD模式下，无线密钥生成系统的性能。
+
+
   
 \section{TDD模式}
 
-本文在TDD模式下的9种情况中，连续长时间采取600组数据，用于实验结果分析。三个场景下、三种信道环境的600组CSI如图\ref{}所示，图中只展示了Alice的结果。
+
+本文在TDD模式下的9种情况中，连续长时间采取600组数据，用于实验结果分析。TDD模式下的试验参数如表\ref{tdd-exp-args}所示，即通信方在2535MHz的频点发射和接收导频信号，导频信号前后两端设有正弦波，Alice发射的导频信号的正弦波频率为4Hz，Bob发射的导频信号的正弦波频率为8Hz，两者使用相同的、长度为4095的M序列用于精同步和信道估计，USRP的采样率均设置为25 MHz。三个场景下、三种信道环境的600组CSI如图\ref{tdd_csi_ab}所示，图中只展示了Alice的结果。图中x轴是测量次数，y轴是子载波数，z轴是幅度值，即从时间的维度来观察CSI的变化。
+
+对比9种场景下的CSI变化，可以看出，室内静态环境下的CSI几乎不变，因为室内信道环境干扰较少，因此信道变化缓慢。与室内静态环境相反的是室外方式三和走廊方式三，这两种情况下CSI变化十分剧烈，一方面终端一直在移动导致的多普勒效应，另一方面室内走廊和空旷室外的信道环境干扰较多。显然，在所有信道环境中，终端完全固定的信道环境下，CSI变化最为平缓；终端移动的信道环境下，CSI变化最为剧烈。在所有场景中，室内房间场景下测量的CSI变化最为平缓，空旷室外场景下测量的CSI变化最为剧烈。CSI变化越剧烈，则每次探测生成的密钥越随机，同时说明信道变化越剧烈，这可能会带来密钥生成速率的降低，因为信道变化剧烈会影响通信双方的互易性。从9种场景的CSI对比可以看出，多普勒频移和较为复杂的信道环境会带来信道的剧烈改变，进而影响CSI的快速变化。
+
+本文接下来将通过计算多个指标，分析无线密钥生成系统的可靠性和安全性。
 
 \begin{figure}
     \centering
@@ -1181,10 +1191,149 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
         \includegraphics[width=0.3\textwidth]{images/tdd-csi/outdoor-trolly-move.jpg}
     }
     \caption{不同场景与环境下CSI结果展示}{} % xcorr between alice and bob, xcorr between bob and eve
-    \label{csi_ab}
-  \end{figure}
+    \label{tdd_csi_ab}
+\end{figure}
 
-  
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+    \multicolumn{2}{|c|}{参数} & Alice & Bob \\ \hline
+    \multirow{5}{*}{USRP} & 上下行载波频率（MHz） & 2535 & 2535 \\ \cline{2-4} 
+     & 采样率（MHz） & 25 & 25 \\ \cline{2-4} 
+     & 增益（dB） & 30 & 30 \\ \cline{2-4} 
+     & 天线 & Tx/Rx & Tx/Rx \\ \cline{2-4} 
+     & 带宽（MHz） & 20 & 20 \\ \hline
+    \multirow{4}{*}{导频信号} & 正弦波长度 & 1504 & 1504 \\ \cline{2-4} 
+     & 正弦波频率（Hz） & 4 & 8 \\ \cline{2-4} 
+     & M序列长度 & 4095 & 4095 \\ \cline{2-4} 
+     & CP循环前缀长度 & 129 & 129 \\ \hline
+    \end{tabular}
+    \caption{TDD模式下的实验参数
+    \label{tdd-exp-args}}
+\end{table}
+
+\subsection{CSI相关性}
+
+本文对每一组数据使用公式（\ref{equation_corr_ab}）和公式（\ref{equation_corr_ae}）分别计算Alice和Bob之间CSI的皮尔逊相关系数、Alice和Eve之间CSI的皮尔逊相关系数。在9种情况下，计算600组数据，得到图\ref{tdd_csi_xcorr}。其中蓝色表示Alice和Bob之间CSI的皮尔逊相关系数，红色表示Alice和Eve之间CSI的皮尔逊相关系数。可以看到Alice和Bob之间CSI的相关系数稳定在1附近，Alice和Eve之间CSI的相关系数波动较大并且较小。
+
+\begin{figure}
+    \centering
+    \subfigure[室内-方式1]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/indoor-no-move.eps}
+    }
+    \subfigure[室内-方式2]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/indoor-people-move.eps}
+    }
+    \subfigure[室内-方式3]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/indoor-trolly-move.eps}
+    }
+    \quad    %用 \quad 来换行
+    \subfigure[走廊-方式1]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/corridor-no-move.eps}
+    }
+    \subfigure[走廊-方式2]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/corridor-people-move.eps}
+    }
+    \subfigure[走廊-方式3]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/corridor-trolly-move.eps}
+    }
+    \quad
+    \subfigure[室外-方式1]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/outdoor-no-move.eps}
+    }
+    \subfigure[室外-方式2]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/outdoor-people-move.eps}
+    }
+    \subfigure[室外-方式3]{
+        \includegraphics[width=0.3\textwidth]{images/tdd-xcorr/outdoor-trolly-move.eps}
+    }
+    \caption{不同场景与环境下Alice和Bob、Alice和Eve之间CSI相关系数}{} % xcorr between alice and bob, xcorr between bob and eve
+    \label{tdd_csi_xcorr}
+\end{figure}
+
+将多组数据取平均，得到9种情况下，Alice、Bob和Eve之间的平均皮尔逊相关系数如图\ref{tdd_bar_xcorr}所示。分析结果表明，在9种情况下，Alice与Bob之间相关性均远高于Alice与Eve。无论哪种情况，Alice和Bob之间相关系数均高于0.9711，该情况出现在室内终端移动的情况下，Alice和Bob之间相关系数最高出现在室内房间终端固定的情况下，高达0.9963。而Alice与Eve之间相关系数最高也只有0.8192，并且出现在室内房间终端固定的情况下。无论是室内、走廊还是室外，当有人员在周围环境走动时，Alice与Eve之间的信道相关性最低，其中室内终端移动情况下低至0.4004。
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/tdd-xcorr/bar2.eps}
+    \caption{不同场景下三者之间的互相关系数柱状图}
+    \label{tdd_bar_xcorr}
+\end{figure}
+
+\subsection{信息泄漏率}
+
+虽然第三方在无线密钥生成过程中通过相同生成步骤得到相同的会话密钥，但是对无线密钥生成的所有过程对于第三方来说都是完全透明的\cite{sahin2016secure}，第三方可以在信道探测过程探测导频信号、在信息调和过程中窃听调和信息，因此本文通过信息论中未泄露的信息量来评估系统的安全性。
+
+本文在9种情况下按照公式（\ref{safe_rate_equation}）计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{tdd_bar_leak}所示。从图中可知，无论是室内、走廊还是室外，均是当有人员在周围环境走动时安全信息率最高，其中在室外，信息安全比率高达91.01\%，这也是所有情况中的最高值，在走廊，信息安全比率为78.52\%。在所有情况中，室内房间终端移动时的信息安全比率最低，低至67.05\%。9种情况的平均安全信息率具体数据为表\ref{}。
+
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/tdd-leak/bar.eps}
+    \caption{不同场景下三者之间的互相关系数柱状图}
+    \label{tdd_bar_leak}
+\end{figure}
+
+% \begin{table}[]
+%     \centering
+%     \begin{tabular}{llll} 
+%         % & & & \\ 
+%         \hline
+%         & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\ \hline
+%     室内 & 0.7962 & 0.8924 & 0.6705 \\ \hline
+% 	走廊 & 0.7604 & 0.7852 & 0.7725 \\ \hline
+%     室外 & 0.8177 & 0.9101 & 0.7882 \\ \hline
+%     \end{tabular}
+%     \caption{不同场景的图像熵值
+%     \label{entropy_fft2d}}
+% \end{table}
+
+
+\begin{table}
+	\centering
+	\caption{不同场景的图像熵值}{}
+	\label{entropy_fft2d}
+	\tabulinesep=1.5mm
+	\begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]}
+		\tabucline[0.08em]-
+		\textbf{} & \textbf{方式1 }& \textbf{方式2} & \textbf{方式3}\\
+		\tabucline-
+    室内 & 2.5391 & 3.7227 & 3.9960 \\
+		走廊 & 3.3293 & 3.8674 & 4.0667 \\
+    室外 & 3.8696 & 3.8933 & 4.0924 \\
+
+		\tabucline[0.08em]-
+	\end{tabu}
+\end{table}
+
+
+本文计算出室内、走廊、室外三种场景下，所有信道环境下的安全信息率平均值，如表\ref{three_scene_avg}所示。表中结果说明各种信道环境下，室外的信息安全比率最高，高达83.87\%，走廊的信息安全比率最低，低至77.27\%。也计算出终端固定、人员移动、终端移动三种信道环境下，所有场景的安全信息率平均值，如表\ref{three_channel_env_avg}。表中说，各种场景下，人员移动的安全比率最高，高达86.26\%，终端移动的安全比率最低，低至74.37\%。从结果中可以看出，信道适当的变化可以提高无线密钥生成系统的安全比率。
+
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    室内 & 走廊 & 室外 \\ \hline
+    78.64\% & 77.27\% & 83.87\% \\ \hline
+    \end{tabular}
+    \caption{室内、走廊和室外三种场景的平均安全信息率
+    \label{three_scene_avg}}
+\end{table}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    终端固定 & 人员移动 & 终端移动 \\ \hline
+    79.14\% & 86.26\% & 74.37\% \\ \hline
+    \end{tabular}
+    \caption{终端固定、人员走动和终端移动三种信道环境的平均安全信息率
+    \label{three_channel_env_avg}}
+\end{table}
+
+
 \section{FDD模式}
 
 \chapter{总结展望}

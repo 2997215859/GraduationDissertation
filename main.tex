@@ -1266,49 +1266,31 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 虽然第三方在无线密钥生成过程中通过相同生成步骤得到相同的会话密钥，但是对无线密钥生成的所有过程对于第三方来说都是完全透明的\cite{sahin2016secure}，第三方可以在信道探测过程探测导频信号、在信息调和过程中窃听调和信息，因此本文通过信息论中未泄露的信息量来评估系统的安全性。
 
-本文在9种情况下按照公式（\ref{safe_rate_equation}）计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{tdd_bar_leak}所示。从图中可知，无论是室内、走廊还是室外，均是当有人员在周围环境走动时安全信息率最高，其中在室外，信息安全比率高达91.01\%，这也是所有情况中的最高值，在走廊，信息安全比率为78.52\%。在所有情况中，室内房间终端移动时的信息安全比率最低，低至67.05\%。9种情况的平均安全信息率具体数据为表\ref{}。
+本文在9种情况下按照公式（\ref{safe_rate_equation}）计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{tdd_bar_leak}所示。从图中可知，无论是室内、走廊还是室外，均是当有人员在周围环境走动时安全信息率最高，其中在室外，信息安全比率高达91.01\%，这也是所有情况中的最高值，在走廊，信息安全比率为78.52\%。在所有情况中，室内房间终端移动时的信息安全比率最低，低至67.05\%。9种情况的平均安全信息率具体数据为表\ref{tdd_bar_leak_data}。
 
 
 \begin{figure}[htbp!]
     \centering \includegraphics[width=0.9\textwidth]{images/tdd-leak/bar.eps}
-    \caption{不同场景下三者之间的互相关系数柱状图}
+    \caption{不同场景下的平均安全信息率柱状图}
     \label{tdd_bar_leak}
 \end{figure}
 
-% \begin{table}[]
-%     \centering
-%     \begin{tabular}{llll} 
-%         % & & & \\ 
-%         \hline
-%         & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\ \hline
-%     室内 & 0.7962 & 0.8924 & 0.6705 \\ \hline
-% 	走廊 & 0.7604 & 0.7852 & 0.7725 \\ \hline
-%     室外 & 0.8177 & 0.9101 & 0.7882 \\ \hline
-%     \end{tabular}
-%     \caption{不同场景的图像熵值
-%     \label{entropy_fft2d}}
-% \end{table}
-
-
-\begin{table}
-	\centering
-	\caption{不同场景的图像熵值}{}
-	\label{entropy_fft2d}
-	\tabulinesep=1.5mm
-	\begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]}
-		\tabucline[0.08em]-
-		\textbf{} & \textbf{方式1 }& \textbf{方式2} & \textbf{方式3}\\
-		\tabucline-
-    室内 & 2.5391 & 3.7227 & 3.9960 \\
-		走廊 & 3.3293 & 3.8674 & 4.0667 \\
-    室外 & 3.8696 & 3.8933 & 4.0924 \\
-
-		\tabucline[0.08em]-
-	\end{tabu}
+\begin{table}[]
+    \centering
+    \begin{tabular}{llll} 
+        % & & & \\ 
+        \hline
+        & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\ \hline
+    室内 & 0.7962 & 0.8924 & 0.6705 \\ \hline
+	走廊 & 0.7604 & 0.7852 & 0.7725 \\ \hline
+    室外 & 0.8177 & 0.9101 & 0.7882 \\ \hline
+    \end{tabular}
+    \caption{不同场景下的平均安全信息率数值
+    \label{tdd_bar_leak_data}}
 \end{table}
 
 
-本文计算出室内、走廊、室外三种场景下，所有信道环境下的安全信息率平均值，如表\ref{three_scene_avg}所示。表中结果说明各种信道环境下，室外的信息安全比率最高，高达83.87\%，走廊的信息安全比率最低，低至77.27\%。也计算出终端固定、人员移动、终端移动三种信道环境下，所有场景的安全信息率平均值，如表\ref{three_channel_env_avg}。表中说，各种场景下，人员移动的安全比率最高，高达86.26\%，终端移动的安全比率最低，低至74.37\%。从结果中可以看出，信道适当的变化可以提高无线密钥生成系统的安全比率。
+本文计算出室内、走廊、室外三种场景下，所有信道环境下的安全信息率平均值，如表\ref{three_scene_avg}所示。表中结果说明各种信道环境下，室外的信息安全比率最高，高达83.87\%，走廊的信息安全比率最低，低至77.27\%。也计算出终端固定、人员移动、终端移动三种信道环境下，所有场景的安全信息率平均值，如表\ref{three_channel_env_avg}。表中说，各种场景下，人员移动的安全比率最高，高达86.26\%，终端移动的安全比率最低，低至74.37\%。从结果中可以看出，信道适当的变化可以提高无线密钥生成系统的信息安全比率。室内和走廊的平均值相近，说明室内和走廊场景对安全信息比率影响相似，室外场景会提高安全信息比率。相对于终端固定和终端移动的信道环境，人员移动对信息安全比率有很大的改善。
 
 
 \begin{table}[]
@@ -1333,6 +1315,12 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
     \label{three_channel_env_avg}}
 \end{table}
 
+\subsection{随机性评估}
+
+本文使用两种指标来作系统的随机性评估，使用频域的图像熵以及NIST随机性测试分别评估CSI随机性和密钥随机性。
+
+\subsubsection{CSI随机性}
+\subsubsection{密钥随机性}
 
 \section{FDD模式}
 

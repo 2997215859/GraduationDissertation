@@ -1402,14 +1402,14 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \subsubsection{密钥随机性}
 
-本文选择NIST随机性测试中的7种随机性测试方法计算不同场景下生成密钥的随机性。本文分别计算了降采样率为1、4、8时的测试结果，分别如表\ref{NIST_test_result_1}、\ref{NIST_test_result_4}、\ref{NIST_test_result_8}所示。图中数据为，600组数据中，通过NIST测试的比例，在图中标记出比例小于1\%的数据。从图中可以看出，随着降采样率提高，密钥随机性提高。
+本文选择NIST随机性测试中的7种随机性测试方法计算不同场景下生成密钥的随机性。本文分别计算了降采样率为1、4、8时的测试结果，分别如表\ref{NIST_test_result_1}、\ref{NIST_test_result_4}、\ref{NIST_test_result_8}所示。图中数据为，600组数据中，通过NIST测试的比例，在图中标记出比例小于1\%的数据。从图中可以看出，随着降采样率提高，比率小于1\%的数据减少，密钥随机性提高。在降采样率为1时，多组数据在NIST随机性测试中表现很差，在降采样率为8时，系统生成的密钥数据在NIST随机性测试中表现良好。表中结果也表明，室内房间场景下终端固定的信道环境中，密钥随机性最低，在多项NIST随机性测试中，通过NIST测试的比率最低。
 
 % 参考 https://blog.csdn.net/ch1209498273/article/details/78848464
 
 
 \begin{table}[]
     \centering
-    \tabulinesep=1.5mm
+    \tabulinesep=1.2mm
     \begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
         \toprule
         \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
@@ -1431,7 +1431,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \begin{table}[]
     \centering
-    \tabulinesep=1.5mm        
+    \tabulinesep=1.2mm        
     \begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
         \toprule
         \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
@@ -1450,12 +1450,12 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
     \caption{NIST测试结果 降采样数为4
     \label{NIST_test_result_4}}
 \end{table}
-.
 
-\%\begin{table}[]
+
+\begin{table}[]
     \centering
     % \setlength{\tabcolsep}{0.2mm}{
-    \tabulinesep=1.5mm        
+    \tabulinesep=1.2mm        
     \begin{tabu} to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
         \toprule
         \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 

@@ -1404,58 +1404,59 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 本文选择NIST随机性测试中的7种随机性测试方法计算不同场景下生成密钥的随机性。本文分别计算了降采样率为1、4、8时的测试结果，分别如表\ref{NIST_test_result_1}、\ref{NIST_test_result_4}、\ref{NIST_test_result_8}所示。
 
-% \begin{table}[]
-%     \centering
-%     \setlength{\tabcolsep}{0.06mm}{
-%     \begin{tabular}{12cm}{cccccccccc} 
-%         \toprule
-%         \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
-%         \textbf{室外-方式1} & \textbf{室外-方式2} & \textbf{室外-方式3} \\
-%         \midrule
-%         频率检验 & 0.1153    & 0.1265    & 0.0594    & 0.0367    & 0.0120    & 0.0683    & 0.0274    & 0.1252    & 0.0410 \\
-%         块内频数检验 & \underline{0.0000}    & 0.0702    & 0.1575    & \underline{0.0009}    & 0.0109    & 0.0257    & \underline{0.0044}    & \underline{0.0081}    & 0.0149 \\
-%         游程检验 & 0.5701    & \underline{0.0081}    & \underline{0.0048}    & 0.0721    & \underline{0.0033}    & 0.0257    & 0.0106    & 0.0167    & 0.0130 \\
-%         块内最长游程检验 & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0006}    & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0006}    & \underline{0.0006} \\
-%         % 二元矩阵秩检验 & 0.9953    & 0.9787    & 0.9352    & 0.9949    & 0.9978    & 0.9812    & 0.9994    & 0.9734    & 0.9689 \\
-%         序列检验 & 0.2056    & \underline{0.0029}    & \underline{0.0042}    & 0.0214    & \underline{0.0011}    & 0.0163    & \underline{0.0044}    & 0.0112    & \underline{0.0087} \\
-%         近似熵检验 & 0.2165    & \underline{0.0023}    & \underline{0.0055}    & 0.0219    & \underline{0.0011}    & 0.0157    & \underline{0.0050}    & 0.0112    & \underline{0.0087} \\
-%         累加和检验 & 0.7804    & 0.7734    & 0.6578    & 0.6346    & 0.6663    & 0.7323    & 0.7573    & 0.8240    & 0.7646 \\
-%         \bottomrule
-%     \end{tabular}
-%     }
-%     \caption{NIST测试结果 降采样数为1
-%     \label{NIST_test_result_1}}
-% \end{table}
-
-% \begin{table}[]
-%     \centering
-%     \setlength{\tabcolsep}{0.2mm}{
-%     \begin{tabular}{cccccccccc} 
-%         \toprule
-%         \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
-%         \textbf{室外-方式1} & \textbf{室外-方式2} & \textbf{室外-方式3} \\
-%         \midrule
-%         频率检验 & 0.0933    & 0.3617    & 0.2133    & 0.1433    & 0.3967    & 0.2367    & 0.2283    & 0.1517    & 0.2033 \\
-%         块内频数检验 & 0.4233    & 0.6783    & 0.8567    & 0.8800    & 0.1967    & 0.7767    & 0.7750    & 0.5967    & 0.7383 \\
-%         游程检验 & \underline{0.0083}    & 0.1883    & 0.0783    & 0.0467    & 0.6433    & 0.1383    & 0.1167    & 0.1583    & 0.1483 \\
-%         块内最长游程检验 & \underline{0.0067}    & \underline{0.0083}    & 0.0233    & 0.0183    & 0.0233    & 0.0817    & \underline{0.0067}    & 0.1183    & 0.0583 \\
-%         % 二元矩阵秩检验 & 0.9750    & 0.9533    & 0.8683    & 0.9283    & 0.9783    & 0.8767    & 0.9950    & 0.8983    & 0.9200 \\
-%         序列检验 & \underline{0.0000}    & 0.0867    & 0.0450    & 0.0367    & 0.3150    & 0.0800    & 0.0367    & 0.0733    & 0.0717 \\
-%         近似熵检验 & \underline{0.0000}    & 0.0733    & 0.0500    & 0.0350    & 0.3867    & 0.0833    & 0.0367    & 0.0700    & 0.0583 \\
-%         累加和检验 & 0.9050    & 0.8950    & 0.8617    & 0.8017    & 0.8017    & 0.9083    & 0.8817    & 0.9533    & 0.9000 \\
-       
-%         \bottomrule
-%     \end{tabular}
-%     }
-%     \caption{NIST测试结果 降采样数为4
-%     \label{NIST_test_result_4}}
-% \end{table}
-
 % 参考 https://blog.csdn.net/ch1209498273/article/details/78848464
+
+
+\begin{table}[]
+    \centering
+    \tabulinesep=1.5mm
+    \begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
+        \toprule
+        \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
+        \textbf{室外-方式1} & \textbf{室外-方式2} & \textbf{室外-方式3} \\
+        \midrule
+        频率检验 & 0.1153    & 0.1265    & 0.0594    & 0.0367    & 0.0120    & 0.0683    & 0.0274    & 0.1252    & 0.0410 \\
+        块内频数检验 & \underline{0.0000}    & 0.0702    & 0.1575    & \underline{0.0009}    & 0.0109    & 0.0257    & \underline{0.0044}    & \underline{0.0081}    & 0.0149 \\
+        游程检验 & 0.5701    & \underline{0.0081}    & \underline{0.0048}    & 0.0721    & \underline{0.0033}    & 0.0257    & 0.0106    & 0.0167    & 0.0130 \\
+        块内最长游程检验 & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0006}    & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0000}    & \underline{0.0006}    & \underline{0.0006} \\
+        % 二元矩阵秩检验 & 0.9953    & 0.9787    & 0.9352    & 0.9949    & 0.9978    & 0.9812    & 0.9994    & 0.9734    & 0.9689 \\
+        序列检验 & 0.2056    & \underline{0.0029}    & \underline{0.0042}    & 0.0214    & \underline{0.0011}    & 0.0163    & \underline{0.0044}    & 0.0112    & \underline{0.0087} \\
+        近似熵检验 & 0.2165    & \underline{0.0023}    & \underline{0.0055}    & 0.0219    & \underline{0.0011}    & 0.0157    & \underline{0.0050}    & 0.0112    & \underline{0.0087} \\
+        累加和检验 & 0.7804    & 0.7734    & 0.6578    & 0.6346    & 0.6663    & 0.7323    & 0.7573    & 0.8240    & 0.7646 \\
+        \bottomrule
+    \end{tabu}
+    \caption{NIST测试结果 降采样数为1
+    \label{NIST_test_result_1}}
+\end{table}
+
+\begin{table}[]
+    \centering
+    \tabulinesep=1.5mm        
+    \begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
+        \toprule
+        \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
+        \textbf{室外-方式1} & \textbf{室外-方式2} & \textbf{室外-方式3} \\
+        \midrule
+        频率检验 & 0.0933    & 0.3617    & 0.2133    & 0.1433    & 0.3967    & 0.2367    & 0.2283    & 0.1517    & 0.2033 \\
+        块内频数检验 & 0.4233    & 0.6783    & 0.8567    & 0.8800    & 0.1967    & 0.7767    & 0.7750    & 0.5967    & 0.7383 \\
+        游程检验 & \underline{0.0083}    & 0.1883    & 0.0783    & 0.0467    & 0.6433    & 0.1383    & 0.1167    & 0.1583    & 0.1483 \\
+        块内最长游程检验 & \underline{0.0067}    & \underline{0.0083}    & 0.0233    & 0.0183    & 0.0233    & 0.0817    & \underline{0.0067}    & 0.1183    & 0.0583 \\
+        % 二元矩阵秩检验 & 0.9750    & 0.9533    & 0.8683    & 0.9283    & 0.9783    & 0.8767    & 0.9950    & 0.8983    & 0.9200 \\
+        序列检验 & \underline{0.0000}    & 0.0867    & 0.0450    & 0.0367    & 0.3150    & 0.0800    & 0.0367    & 0.0733    & 0.0717 \\
+        近似熵检验 & \underline{0.0000}    & 0.0733    & 0.0500    & 0.0350    & 0.3867    & 0.0833    & 0.0367    & 0.0700    & 0.0583 \\
+        累加和检验 & 0.9050    & 0.8950    & 0.8617    & 0.8017    & 0.8017    & 0.9083    & 0.8817    & 0.9533    & 0.9000 \\
+        \bottomrule
+    \end{tabu}
+    \caption{NIST测试结果 降采样数为4
+    \label{NIST_test_result_4}}
+\end{table}
+
+
 \begin{table}[]
     \centering
     % \setlength{\tabcolsep}{0.2mm}{
-    \begin{tabu}to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
+    \tabulinesep=1.5mm        
+    \begin{tabu} to \linewidth{X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]X[c,m]}
         \toprule
         \textbf{} & \textbf{室内-方式1} & \textbf{室内-方式2} & \textbf{室内-方式3} & \textbf{走廊-方式1} & \textbf{走廊-方式2} & \textbf{走廊-方式3} & 
         \textbf{室外-方式1} & \textbf{室外-方式2} & \textbf{室外-方式3} \\

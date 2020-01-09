@@ -1477,6 +1477,21 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
     \label{NIST_test_result_8}}
 \end{table}
 
+\subsection{密钥生成速率}
+
+调整降采样率可以影响密钥生成速率，降采样率过高，密钥生成速率降低，降采样率过低，密钥生成速率
+提高，但密钥一致率会降低。本文计算了室内终端固定情况下，不同降采样率的密钥生成速率，如图\ref{keyrate}所示。观察可知，密钥生成速率随着降采样率升高而降低。在采样率
+为 4 时，密钥生成速率高达 92.2231bits/s，在采样率为 20 时，密钥生成速率降低到 15.9688 bits/s。
+
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/keyrate.eps}
+    \caption{不同降采样率的密钥生成速率}
+    \label{keyrate}
+\end{figure}
+
+
+\subsection{纠错码对密钥一致率}
 
 \section{FDD模式}
 

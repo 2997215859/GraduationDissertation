@@ -1493,6 +1493,60 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \subsection{纠错码对密钥一致率}
 
+发送端使用随机的消息比特作为输入，利用纠错码编码，再与密钥流异或，接收端再与密钥流异或，然后利用送入纠错解码器解码。本文分别计算了9种情况下BCH码和Turbo码的纠错能力。每情况使用600组数据计算平均误码率以及平均密钥一致率。
+
+如图\ref{bar-bch-ber-nine}为9种情况下BCH码的纠错效果，其中参数N = 31, K = 11。具体数据见表格\ref{bch-ber-nine}，可以观察出密钥一致率变高，纠错之后的误比特率也会随着降低。所有场景中，密钥一致率最高为室外静态方式的95\%，其也对应着最低的误比特率7.25\%；密钥一致率最低为室内终端移动场景91.75\%，其也对应着最高的误比特率9.99\%。
+
+如图\ref{bar-tur-ber-nine}为9种情况下Turbo码的纠错效果，其中迭代次数为8，N = 2， K = 3，生成多项式为g = [1 1 1; 1 0 1]。所有场景中，密钥一致率最高为室外静态方式的95\%，其也对应着最低的误比特率1.43\%；密钥一致率最高为室内终端移动场景91.75\%，其对应这最高的误比特率5.29\%。相对于BCH纠错码来说，Turbo码的误比特率更小一些，因为Turbo的信道纠错性能更加接近香农极限。
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/tdd-encode/bch-ber-nine.eps}
+    \caption{不同情况下BCH的平均误码率以及对应的平均密钥一致率}
+    \label{bar-bch-ber-nine}
+\end{figure}
+
+\begin{table}[]
+    \centering
+    \setlength{\tabcolsep}{10mm}{
+    \begin{tabular}{cccc} 
+        \toprule
+        & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\
+        \midrule
+        室内 & 0.9445/0.0830 & 0.9434/0.0768 & 0.9175/0.0999 \\ 
+        走廊 & 0.9296/0.0870 & 0.9413/0.0797 & 0.9362/0.0850 \\ 
+        室外 & 0.9500/0.0685 & 0.9431/0.0786 & 0.9499/0.0725 \\
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{不同情况下BCH的平均误码率以及对应的平均密钥一致率
+    \label{bch-ber-nine}}
+\end{table}
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[width=0.9\textwidth]{images/tdd-encode/turbo-ber-nine.eps}
+    \caption{不同情况下Turbo的平均误码率以及对应的平均密钥一致率}
+    \label{bar-turbo-ber-nine}
+\end{figure}
+
+
+\begin{table}[]
+    \centering
+    \setlength{\tabcolsep}{10mm}{
+    \begin{tabular}{cccc} 
+        \toprule
+        & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\
+        \midrule
+        室内 & 0.9445/0.0146 & 0.9434/0.0262 & 0.9175/0.0529 \\ 
+        走廊 & 0.9296/0.0378 & 0.9413/0.0188 & 0.9362/0.0301 \\ 
+        室外 & 0.9500/0.0143 & 0.9431/0.0180 & 0.9499/0.0157 \\
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{不同情况下Turbo的平均误码率以及对应的平均密钥一致率
+    \label{turbo-ber-nine}}
+\end{table}
+
+
 \section{FDD模式}
 
 \chapter{总结展望}

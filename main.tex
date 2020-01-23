@@ -1549,6 +1549,28 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \section{FDD模式}
 
+与TDD相似，本文同样在FDD模式下的9种情况中，连续各采集600组数据，并计算相应指标。FDD模式下的实验参数如表\ref{fdd-exp-args}所示，即上下行频率分别为1595MHz和1535MHz，导频信号中正弦波的频率、M序列长度与TDD模式相同。USRP采样率设置为25MHz。三个场景下、三种信道环境的600组CSI如图\ref{}所示，本文只展现Alice的CSI。图中x轴是测量次数，y轴是子载波数，z轴是幅度值，即从时间的维度来观察CSI的变化。
+
+
+\begin{table}[]
+    \begin{tabular}{llll}
+    \hline
+    \multicolumn{2}{c}{参数} & Alice & Bob \\ \hline
+    \multicolumn{1}{|l|}{\multirow{6}{*}{USRP}} & \multicolumn{1}{l|}{发射载波频率（MHz）} & \multicolumn{1}{l|}{2535} & \multicolumn{1}{l|}{2595} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{接收载波频率（MHz）} & \multicolumn{1}{l|}{2595} & \multicolumn{1}{l|}{2535} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{采样率（MHz）} & \multicolumn{1}{l|}{25} & \multicolumn{1}{l|}{25} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{增益（dB）} & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{天线} & \multicolumn{1}{l|}{Tx/Rx} & \multicolumn{1}{l|}{Tx/Rx} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{带宽（MHz）} & \multicolumn{1}{l|}{20} & \multicolumn{1}{l|}{20} \\ \hline
+    \multicolumn{1}{|l|}{\multirow{4}{*}{导频信号}} & \multicolumn{1}{l|}{正弦波长度} & \multicolumn{1}{l|}{1504} & \multicolumn{1}{l|}{1504} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{正弦波频率（Hz）} & \multicolumn{1}{l|}{4} & \multicolumn{1}{l|}{8} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{M序列长度} & \multicolumn{1}{l|}{4095} & \multicolumn{1}{l|}{4095} \\ \cline{2-4} 
+    \multicolumn{1}{|l|}{} & CP循环前缀长度 & 129 & 129 \\ \hline
+    \end{tabular}
+    \caption{FDD模式下的实验参数
+    \label{fdd-exp-args}}
+\end{table}
+
 \chapter{总结展望}
 
 \end{Main} % 结束正文

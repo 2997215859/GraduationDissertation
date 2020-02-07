@@ -1843,16 +1843,17 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \subsection{纠错码对密钥一致率}
 
-发送端使用随机的消息比特作为输入，利用纠错码编码，再与密钥流异或，接收端再与密钥流异或，然后利用送入纠错解码器解码。本文分别计算了9种情况下BCH码和Turbo码的纠错能力。每情况使用600组数据计算平均误码率以及平均密钥一致率。
+本文使用FDD模式下实测数据，分析FDD模式下纠错码的纠错性能。同TDD模式一样，本文分别计算9种情况下BCH码和Turbo码的纠错能力，每种情况使用600组数据计算平均密钥一致率及其对应的平均误码率。如图\ref{bar-bch-ber-nine}为9种情况下BCH码的纠错效果，其中参数N = 31, K = 11。具体数据见表格\ref{fdd-bch-ber-nine}，
 
-如图\ref{bar-bch-ber-nine}为9种情况下BCH码的纠错效果，其中参数N = 31, K = 11。具体数据见表格\ref{bch-ber-nine}，可以观察出密钥一致率变高，纠错之后的误比特率也会随着降低。所有场景中，密钥一致率最高为室外静态方式的95\%，其也对应着最低的误比特率7.25\%；密钥一致率最低为室内终端移动场景91.75\%，其也对应着最高的误比特率9.99\%。
 
-如图\ref{bar-turbo-ber-nine}为9种情况下Turbo码的纠错效果，其中迭代次数为8，N = 2， K = 3，生成多项式为g = [1 1 1; 1 0 1]。所有场景中，密钥一致率最高为室外静态方式的95\%，其也对应着最低的误比特率1.43\%；密钥一致率最高为室内终端移动场景91.75\%，其对应这最高的误比特率5.29\%。相对于BCH纠错码来说，Turbo码的误比特率更小一些，因为Turbo的信道纠错性能更加接近香农极限。
+表中结果表明，误比特率和密钥一致率成反比。所有场景中，密钥一致率最高为室内终端移动的77.05\%，其也对应着最低的误比特率24.07\%；密钥一致率最低为室内终端固定情况下的60.92\%，其也对应着最高的误比特率39.38\%。
+
+如图\ref{fdd-bar-turbo-ber-nine}为9种情况下Turbo码的纠错效果，其中迭代次数为8，N = 2， K = 3，生成多项式为g = [1 1 1; 1 0 1]。所有场景中，密钥一致率最高为室内终端移动的77.05\%，其也对应着最低的误比特率22.89\%；密钥一致率最低为室内终端固定情况下的60.92\%，其对应这最高的误比特率42.54\%。根据表中结果，Turbo纠错性能好于BCH码。此外，无论是BCH码还是Turbo码，相对于TDD模式的系统纠错性能，FDD模式下纠错性能均差于TDD模式，这是因为FDD模式下密钥一致率较低。
 
 \begin{figure}[htbp!]
-    \centering \includegraphics[width=0.9\textwidth]{images/tdd-encode/bch-ber-nine.eps}
+    \centering \includegraphics[width=0.9\textwidth]{images/fdd-encode/bch-ber-nine.eps}
     \caption{不同情况下BCH的平均误码率以及对应的平均密钥一致率}
-    \label{bar-bch-ber-nine}
+    \label{fdd-bar-bch-ber-nine}
 \end{figure}
 
 \begin{table}[]
@@ -1862,20 +1863,20 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
         \toprule
         & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\
         \midrule
-        室内 & 0.9445/0.0830 & 0.9434/0.0768 & 0.9175/0.0999 \\ 
-        走廊 & 0.9296/0.0870 & 0.9413/0.0797 & 0.9362/0.0850 \\ 
-        室外 & 0.9500/0.0685 & 0.9431/0.0786 & 0.9499/0.0725 \\
+        室内 & 0.6092/0.3938 & 0.6314/0.3707 & 0.7705/0.2407 \\ 
+        走廊 & 0.6121/0.3788 & 0.6207/0.3745 & 0.6207/0.3834 \\ 
+        室外 & 0.6297/0.3854 & 0.6337/0.3766 & 0.6330/0.3736 \\
         \bottomrule
     \end{tabular}
     }
     \caption{不同情况下BCH的平均误码率以及对应的平均密钥一致率
-    \label{bch-ber-nine}}
+    \label{fdd-bch-ber-nine}}
 \end{table}
 
 \begin{figure}[htbp!]
-    \centering \includegraphics[width=0.9\textwidth]{images/tdd-encode/turbo-ber-nine.eps}
+    \centering \includegraphics[width=0.9\textwidth]{images/fdd-encode/turbo-ber-nine.eps}
     \caption{不同情况下Turbo的平均误码率以及对应的平均密钥一致率}
-    \label{bar-turbo-ber-nine}
+    \label{fdd-bar-turbo-ber-nine}
 \end{figure}
 
 
@@ -1886,14 +1887,14 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
         \toprule
         & \textbf{方式1} & \textbf{方式2} & \textbf{方式3} \\
         \midrule
-        室内 & 0.9445/0.0146 & 0.9434/0.0262 & 0.9175/0.0529 \\ 
-        走廊 & 0.9296/0.0378 & 0.9413/0.0188 & 0.9362/0.0301 \\ 
-        室外 & 0.9500/0.0143 & 0.9431/0.0180 & 0.9499/0.0157 \\
+        室内 & 0.6092/0.4254 & 0.6314/0.3705 & 0.7705/0.2289 \\ 
+        走廊 & 0.6121/0.4042 & 0.6207/0.3953 & 0.6207/0.3920 \\ 
+        室外 & 0.6297/0.4157 & 0.6337/0.4001 & 0.6330/0.3905 \\
         \bottomrule
     \end{tabular}
     }
     \caption{不同情况下Turbo的平均误码率以及对应的平均密钥一致率
-    \label{turbo-ber-nine}}
+    \label{fdd-turbo-ber-nine}}
 \end{table}
 
 

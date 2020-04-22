@@ -26,18 +26,18 @@
 \categorynumber{000} % 分类采用《中国图书资料分类法》
 \UDC{000}            %《国际十进分类法UDC》的类号
 \secretlevel{公开}    %学位论文密级分为"公开"、"内部"、"秘密"和"机密"四种
-\studentid{09013000}   %学号要完整，前面的零不能省略。
+\studentid{XXX}   %学号要完整，前面的零不能省略。
 
 \title{一种TDD/FDD下低时延宽带无线信道密钥生成系统研究}{}{Deep learning in greek alphabet}{subtitle}
-\author{袁瑞}{Rui Yuan}
+\author{XX}{XXX}
 % \advisor{彭林宁}{副研究员}{Linning Peng}{Associate Prof.}  % 没有
-\coadvisor{彭林宁}{副教授}{Linning Peng}{Associate Prof.}
+\coadvisor{XXX}{XXX}{XXX}{Associate Prof.}
 
 % \degree{工学硕士} % 详细学位名称
-\major[12em]{网络空间安全}
+\major[12em]{XXX}
 \defenddate{答辩日期}
 \authorizedate{学位授予日期}
-\department{网络空间安全}{department name}
+\department{XXX}{department name}
 \duration{2017年9月—2020年6月}
 \address{东南大学}
 % \thanks{本论文获国家XXX计划项目（2012AA00A00）和国家杰出青年科学基金项目（01234567）资助。}
@@ -55,10 +55,17 @@
 \quad % 要加一个占位符号，否则item会导致编译不通过
 \end{abstract}
 
-\begin{englishabstract}{Greek Alphabet, Phoenician Alphabet, Language, Deep Learning}
-The Greek alphabet has been used to write the Greek language since the late 9th century BC or early 8th century BC It was derived from the earlier Phoenician alphabet, and was the first alphabetic script to have distinct letters for vowels as well as consonants. It is the ancestor of the Latin and Cyrillic scripts.Apart from its use in writing the Greek language, in both its ancient and its modern forms, the Greek alphabet today also serves as a source of technical symbols and labels in many domains of mathematics, science and other fields.
+\begin{englishabstract}{Wireless Channel Key Generation, Physical Layer Security, Channel Reciprocity}
+Wireless communication has played a more and more important role in daily life. It is of great significance to ensure the security of wireless communication network. Wireless communication is vulnerable to attack because of its openness, vulnerability and topology. At present, traditional security mechanisms play an important role in wireless communication network security. However, the traditional security mechanism has obvious limitations: it is not suitable for low-power network node devices, or it is broken by quantum computing, and key distribution is difficult.
 
-In its classical and modern forms, the alphabet has 24 letters, ordered from alpha to omega. Like Latin and Cyrillic, Greek originally had only a single form of each letter; it developed the letter case distinction between upper-case and lower-case forms in parallel with Latin during the modern era.
+The research on physical layer security of wireless communication provides a new perspective for wireless communication security. In wireless communication, the channels of both sides of communication have good short-term reciprocity, so similar channel features can be extracted from the wireless channel, and then a consistent session key can be generated. Wireless key generation has become a hot issue in wireless communication security research. At present, there have been a lot of theoretical research on wireless key generation, but there is lack of practical research on the application of wireless key generation scheme. Based on gnuradio software radio development kit and universal software radio peripheral (USRP), this paper designs the specific details of wireless key generation scheme, realizes the wireless key generation system in TDD / FDD mode, and uses the system in three different scenarios: indoor room, indoor corridor, open outdoor, terminal fixation, terminal movement and personnel walking The system performance of TDD mode and FDD mode is evaluated respectively by CSI correlation, information leakage rate, CSI randomness evaluation, key NIST test, key generation rate, error correction performance of error correction code and other related indexes. The security and reliability of key generation technology of wireless channel in different scenarios and environments are analyzed in detail The results show that the key can be generated in different scenarios and environments by selecting the appropriate key generation parameters. The main work and conclusions are as follows.
+
+\begin{itemize}
+    \item Based on gnuradio software development kit and USRP general radio peripherals, the pilot transceiver is designed, and a complete wireless key generation system is built with the pilot transceiver as the core. Pilot signal transceiver is composed of four modules: pilot sequence output module, data transmission module, data receiving module and pilot signal detection module. In this paper, the upper layer protocol is designed to control the four modules to complete the transmission and reception of pilot signal in TDD / FDD mode, further channel estimation, feature quantization, information reconciliation, privacy amplification, and finally session key and phase Turn off the intermediate information transfer to disk for analysis. In addition, two schemes are considered in the design of the system, one is based on CRC check code, the other is based on error correction code. The former uses CRC to remove inconsistent bits, and the latter uses exclusive or bitstream to encrypt and decrypt bitstream, combining with error correction code to recover message.
+    \item In TDD mode, this paper uses the wireless key generation system, which runs for a long time in three different channel environments: indoor, corridor, outdoor, terminal fixed, terminal mobile, and personnel walking. It measures the continuous wireless channel changes in the actual environment and generates the key, and analyzes a number of indicators. The experimental results show that in TDD mode, the interaction between CSIS of both sides of legitimate communication is much higher than that of CSI of eavesdropper, and the average CSI information security rate is 91.01 \%. In addition, by calculating the image entropy of CSI, we can observe the change of CSI in time domain and frequency domain under different conditions. The complex channel environment will improve the image entropy of CSI. NIST random test results show that the system generated key stream in TDD mode has good performance in many NIST tests, and this paper observes the key passing the NIST test at different desampling rates. The results show that the increase of desampling rate will improve the randomness of the key, but also reduce the key generation rate. In terms of key generation rate, TDD mode can achieve 92.2231 bits / s at a down sampling rate of 4, and the generated key stream at this sampling rate performs well in NIST test. At the same time, this paper also compares the performance of BCH and turbo error correcting code in TDD mode. The results show that turbo code is better than BCH code in information reconciliation.
+    \item In FDD mode, this paper uses the wireless key generation system to measure the wireless channel and generate the key for a long time in the same 9 cases, and analyzes a number of indicators. The experimental results show that the interaction between CSI and eavesdropper is not better in FDD mode, and the average information security rate is lower than that in FDD mode. The CSI image entropy in FDD mode is similar to that in TDD mode, but its key generation performance in NIST randomness test is slightly worse than that in FDD mode. In terms of key generation rate, due to the decrease of key consistency rate in FDD mode, the key generation rate in TDD mode is about 3 times of that in FDD mode at the same sample reduction rate. At the same time, due to the same reason, the performance of FDD mode error correction code reconciliation scheme is poor. When the key consistency rate is low, the recovered message has a large bit error rate.
+\end{itemize}
+\quad % 要加一个占位符号，否则item会导致编译不通过
 \end{englishabstract}
 
 \tableofcontents
@@ -1956,7 +1963,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 % 这次的毕业论文设计总结是在我的指导老师xxx老师亲切关怀和悉心指导下完成的。从毕业设计选题到设计完成，x老师给予了我耐心指导与细心关怀，有了老师耐心指导与细心关怀我才不会在设计的过程中迷失方向，失去前进动力。x老师有严肃的科学态度，严谨的治学精神和精益求精的工作作风，这些都是我所需要学习的，感谢x老师给予了我这样一个学习机会，谢谢!
 
 % 　　感谢与我并肩作战的舍友与同学们，感谢关心我支持我的朋友们，感谢学校领导、老师们，感谢你们给予我的帮助与关怀;感谢肇庆学院，特别感谢计算机科学与软件学院四年来为我提供的良好学习环境，谢谢!
-balabala巴拉巴拉
+XXX
 \end{Acknowledgement}
 
 % 参考文献

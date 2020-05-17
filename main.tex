@@ -28,7 +28,7 @@
 \secretlevel{公开}    %学位论文密级分为"公开"、"内部"、"秘密"和"机密"四种
 \studentid{09013000}   %学号要完整，前面的零不能省略。
 
-\title{一种TDD/FDD下低时延宽带无线信道密钥生成系统研究}{}{Deep learning in greek alphabet}{subtitle}
+\title{一种TDD/FDD下低时延宽带无线信道密钥生成系统研究}{}{Research on a key generation system of low delay broadband wireless channel based on TDD / FDD}{}
 \author{袁瑞}{Rui Yuan}
 % \advisor{彭林宁}{副研究员}{Linning Peng}{Associate Prof.}  % 没有
 \coadvisor{彭林宁}{副教授}{Linning Peng}{Associate Prof.}
@@ -130,7 +130,7 @@
 
 传统加密算法有以下几个问题。首先，传统加密算法依赖一些数学问题的计算难度，比如离散对数问题\cite{forouzan2007cryptography}。随着硬件发展和算力的大幅提升，通过计算难度保证安全不再可取。此外，传统加密算法需要一个可信的密钥管理设施，并不适用于去中心化的无线传感器网络（WSN）和无线自组网络，并且传感器节点的计算能力有限。
 
-即使通信协议的上层应用了传统加密算法，也需要从物理层层面加强通信安全以抵抗攻击。物理层安全（PLS）可以利用无线信道的不可预测性和随机性来达到信息论安全。如图\ref{wirelss-network-security}所示，PLS方法包括无密钥安全和基于密钥的安全机制。在Wyner\cite{wyner1975wire}和Csiszar{csiszar1978broadcast}等人提出的窃听信道模型中，无密钥安全不需要加密密钥，而是通过合法用户和窃听者之间不同的信道特性来保证安全\cite{6739367},，当合法通信信道优于窃听者信道时，合法通信双方之间便可以协商出安全的密钥。\citet{peng2017secret}提到，即使窃听者信道由于合法通信信道，也存在方法来协商出安全的密钥。比如，\citet{parada2005secrecy}、\citet{liu2009note}和\citet{li2007secret2}分析了慢衰落信道\cite{gopala2008secrecy}、快衰落信道\cite{li2007secret}以及多天线条件下密钥容量。合法用户需要知道第三方窃听者的瞬态或者稳态信道状态信息（CSI），但是在生产环境中，获取第三方窃听者的瞬态和稳态信号比较复杂、不易实现。
+即使通信协议的上层应用了传统加密算法，也需要从物理层层面加强通信安全以抵抗攻击。物理层安全（PLS）可以利用无线信道的不可预测性和随机性来达到信息论安全。如图\ref{wirelss-network-security}所示，PLS方法包括无密钥安全和基于密钥的安全机制。在Wyner\cite{wyner1975wire}和Csiszar{csiszar1978broadcast}等人提出的窃听信道模型中，无密钥安全不需要加密密钥，而是通过合法用户和窃听者之间不同的信道特性来保证安全\cite{6739367},，当合法通信信道优于窃听者信道时，合法通信双方之间便可以协商出安全的密钥。文献\citet{peng2017secret}提到，即使窃听者信道由于合法通信信道，也存在方法来协商出安全的密钥。比如，文献\citet{parada2005secrecy}、\citet{liu2009note}和\citet{li2007secret2}分析了慢衰落信道\cite{gopala2008secrecy}、快衰落信道\cite{li2007secret}以及多天线条件下密钥容量。合法用户需要知道第三方窃听者的瞬态或者稳态信道状态信息（CSI），但是在生产环境中，获取第三方窃听者的瞬态和稳态信号比较复杂、不易实现。
 
 基于密钥的安全机制追随到1919年提出的Vernam加密，即一次一密\cite{vernam1922secret}。之后，香农为完全保密提出理论基础\cite{shannon1949communication}。当密钥Key的信息大于等于消息M的信息时，消息M可以被编码成码字C，并不会泄露任何消息，即
 
@@ -173,7 +173,7 @@
     \frac{1}{n}log[\mathcal{K}] < \frac{1}{n}H(K^A) + \epsilon \label{keyrate4}
 \end{eqnarray}
 
-那么式中R即可达密钥速率，其中$I(\cdot)$表示互信息，$\mathcal{K}$表示密钥key的字母表。公式\ref{keyrate1}表示Alice和Bob生成相同密钥的可能性；公式\ref{keyrate2}表示通过公共信道传输消息，不会泄露给窃听者Eve，从而保证密钥安全性；公式\ref{keyrate4}确保密钥是均匀分布。最大可达密钥速率可以用密钥容量定义，
+那么式中R即可达密钥速率，其中$I(\cdot)$表示互信息，$\mathcal{K}$表示密钥key的字母表。公式(\ref{keyrate1})表示Alice和Bob生成相同密钥的可能性；公式(\ref{keyrate2})表示通过公共信道传输消息，不会泄露给窃听者Eve，从而保证密钥安全性；公式(\ref{keyrate4})确保密钥是均匀分布。最大可达密钥速率可以用密钥容量定义，
 
 \begin{equation}
     C_K = min[I(X;Y), I(X, Y|Z)]
@@ -183,7 +183,7 @@
 \cite{koorapaty2000secure, sayeed2008secure, chorti2012helping, shehadeh2012towards}和幅度三种。由于离开角和到达角不同，角度的特征通常不互易，因此角度特征不够实用。基于幅度的密钥生成使用的信道特性有接收信号强度（Received Signal Strength，RSS）\cite{jana2009effectiveness, mathur2008radio, patwari2009high, croft2010robust, liu2014group}、信号包络\cite{azimi2007robust, tope2001unconditionally, liu2014secret, badawy2016robust, zhang2016efficient, xi2014keep, liu2012exploiting}，幅度交叉
 率(Level-Crossing Rate，LCR)\cite{ye2010information}和距离\cite{gungor2011secret}。因此基于相位和幅度的密钥生成方法更加值得研究和关注。
 
-目前已经有一些研究工作实现上述理论。1995年第一个实际的密钥生成协议被提出\cite{hershey1995unconventional}，之后陆续出现大量研究无线密钥生成的相关工作。\citet{WangSurvey}的第四章从信息论角度阐述了无线密钥生成。\citet{WangSurvey}将信道探测和量化合并为一个步骤来研究。\citet{zeng2015physical}介绍了密钥生成技术存在的机遇和挑战，但是未涉及到具体实现细节。\citet{ren2011secret}总结了一些密钥生成方法，比如基于接收信号强度（RSS）\cite{luo2016rss}和基于信道相位的方法\cite{wang2011fast}。
+目前已经有一些研究工作实现上述理论。1995年第一个实际的密钥生成协议被提出\cite{hershey1995unconventional}，之后陆续出现大量研究无线密钥生成的相关工作。文献\citet{WangSurvey}的第四章从信息论角度阐述了无线密钥生成。文献\citet{WangSurvey}将信道探测和量化合并为一个步骤来研究。文献\citet{zeng2015physical}介绍了密钥生成技术存在的机遇和挑战，但是未涉及到具体实现细节。文献\citet{ren2011secret}总结了一些密钥生成方法，比如基于接收信号强度（RSS）\cite{luo2016rss}和基于信道相位的方法\cite{wang2011fast}。
 
 \section{研究内容和方法}
 
@@ -657,7 +657,7 @@ CSI的随机性既有时域的变化，也有频域的变化。为了衡量CSI�
 本文使用伪随机性序列（PN序列）作为精确同步和信道估计所用序列，由于m序列是PN序列中的一种，并且具有良好的自相关特性，所以本文使用m序列作为导频信号的主体部分。为了消除符号间干扰（Inter-Symbol-Interference，ISI）和载波间干扰（Inter-Carrier-Interference，ICI），在m序列后面添加循环前缀（Cyclic Prefix, CP）充当保护间隔，CP指的是将m序列的前面一部分复制到后段。
 
 % TODO 加入仿真和实际测量中m序列自相关的图片
-因为精同步发生在导频信号检测并转存之后，对实时性要求不高，因此本文利用m序列的自相关特性来精确切割导频信号。m序列的自相关函数是公式（\ref{m_self}）所示周期性的二值函数，m序列的自相关函数时域上与冲激函数相近，在完全重合的周期点会出现波峰，并且随着m序列周期增加，m序列的随机性越好。设通信方转存的导频信号为$Rx$，包含的m序列理想情况为$m$，长度为$L_m$，第一段正弦波的完整长度为$L_{sine}$，那么可以遍历导频信号的起始一段，通过与已知原始m序列共轭相乘相加，求出波峰$Peak$并保存波峰位置i，
+因为精同步发生在导频信号检测并转存之后，对实时性要求不高，因此本文利用m序列的自相关特性来精确切割导频信号。m序列的自相关函数是公式(\ref{m_self})所示周期性的二值函数，m序列的自相关函数时域上与冲激函数相近，在完全重合的周期点会出现波峰，并且随着m序列周期增加，m序列的随机性越好。设通信方转存的导频信号为$Rx$，包含的m序列理想情况为$m$，长度为$L_m$，第一段正弦波的完整长度为$L_{sine}$，那么可以遍历导频信号的起始一段，通过与已知原始m序列共轭相乘相加，求出波峰$Peak$并保存波峰位置i，
 
 \begin{equation}
     Peak = max\{\frac{\sum_{k = i}^{L_m} \bar{m(k})\times Rx(i + k)}{L_m}) \}, i \in \{1, .., L_m + L_{sine}\}
@@ -1256,7 +1256,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \subsection{CSI相关性}
 
-本文对每一组数据使用公式（\ref{equation_corr_ab}）和公式（\ref{equation_corr_ae}）分别计算Alice和Bob之间CSI的皮尔逊相关系数、Alice和Eve之间CSI的皮尔逊相关系数。在9种情况下，计算600组数据，得到图\ref{tdd_csi_xcorr}。其中蓝色表示Alice和Bob之间CSI的皮尔逊相关系数，红色表示Alice和Eve之间CSI的皮尔逊相关系数。可以看到Alice和Bob之间CSI的相关系数稳定在1附近，Alice和Eve之间CSI的相关系数波动较大并且较小。
+本文对每一组数据使用公式(\ref{equation_corr_ab})和公式(\ref{equation_corr_ae})分别计算Alice和Bob之间CSI的皮尔逊相关系数、Alice和Eve之间CSI的皮尔逊相关系数。在9种情况下，计算600组数据，得到图\ref{tdd_csi_xcorr}。其中蓝色表示Alice和Bob之间CSI的皮尔逊相关系数，红色表示Alice和Eve之间CSI的皮尔逊相关系数。可以看到Alice和Bob之间CSI的相关系数稳定在1附近，Alice和Eve之间CSI的相关系数波动较大并且较小。
 
 \begin{figure}
     \centering
@@ -1305,7 +1305,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 虽然第三方在无线密钥生成过程中通过相同生成步骤得到相同的会话密钥，但是对无线密钥生成的所有过程对于第三方来说都是完全透明的\cite{sahin2016secure}，第三方可以在信道探测过程探测导频信号、在信息调和过程中窃听调和信息，因此本文通过信息论中未泄露的信息量来评估系统的安全性。
 
-本文在9种情况下按照公式（\ref{safe_rate_equation}）计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{tdd_bar_leak}所示。从图中可知，无论是室内、走廊还是室外，均是当有人员在周围环境走动时安全信息率最高，其中在室外，信息安全比率高达91.01\%，这也是所有情况中的最高值，在走廊，信息安全比率为78.52\%。在所有情况中，室内房间终端移动时的信息安全比率最低，低至67.05\%。9种情况的平均安全信息率具体数据为表\ref{tdd_bar_leak_data}。
+本文在9种情况下按照公式(\ref{safe_rate_equation})计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{tdd_bar_leak}所示。从图中可知，无论是室内、走廊还是室外，均是当有人员在周围环境走动时安全信息率最高，其中在室外，信息安全比率高达91.01\%，这也是所有情况中的最高值，在走廊，信息安全比率为78.52\%。在所有情况中，室内房间终端移动时的信息安全比率最低，低至67.05\%。9种情况的平均安全信息率具体数据为表\ref{tdd_bar_leak_data}。
 
 
 \begin{figure}[htbp!]
@@ -1435,7 +1435,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
     \label{entropy_fft2d}}
 \end{table}
 
-本文在每个情况下，使用600组CSI按照公式（\ref{entropy_fft2d_equation}）计算多组CSI的图像熵，如表\ref{entropy_fft2d}。从表中可以看出，无论哪种信道环境，室内房间的CSI随机性均最低，空旷室外的CSI随机性最高。无论哪种场景，终端固定的信道环境下的CSI随机性最低，终端移动的信道环境下的CSI随机性最高。所有情况中，在室内场景下的终端固定时CSI随机性最低，低至2.5391；在室外场景下的终端移动时CSI随机性最高，高达4.0924。从表中分析得知，随着信道环境更加复杂，系统探测的CSI随机性也会增加。
+本文在每个情况下，使用600组CSI按照公式(\ref{entropy_fft2d_equation})计算多组CSI的图像熵，如表\ref{entropy_fft2d}。从表中可以看出，无论哪种信道环境，室内房间的CSI随机性均最低，空旷室外的CSI随机性最高。无论哪种场景，终端固定的信道环境下的CSI随机性最低，终端移动的信道环境下的CSI随机性最高。所有情况中，在室内场景下的终端固定时CSI随机性最低，低至2.5391；在室外场景下的终端移动时CSI随机性最高，高达4.0924。从表中分析得知，随着信道环境更加复杂，系统探测的CSI随机性也会增加。
 
 \subsubsection{密钥随机性}
 
@@ -1697,7 +1697,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 \subsection{信息泄漏率}
 
-和FDD一样，本文在9种情况下按照公式（\ref{safe_rate_equation}）计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{fdd_bar_leak}所示。
+和FDD一样，本文在9种情况下按照公式(\ref{safe_rate_equation})计算了多组安全信息率并取平均，9种情况下的平均安全信息率如图\ref{fdd_bar_leak}所示。
 
 分析图中结果可知，无论是室内、走廊还是室外，均是当终端移动时安全信息率最高，其中在室内终端移动时，信息安全比率高达67.74\%，这也是所有情况中的最高值，在室外终端移动时，信息安全比率为41.49\%。在所有情况中，室内房间终端固定时的信息安全比率最低，低至15.57\%。9种情况的平均安全信息率具体数据为表\ref{fdd_bar_leak_data}。
 
@@ -1766,7 +1766,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 本文在上一章中已经计算了信道无多径且不随时间变化、信道有多径且不随时间变化、信道随时间不同完全随机变化三种特殊情况下的CSI作为对比，其CSI以及熵值如图\ref{special_csi}和\ref{entropy_spectial}。因此本文FDD模式下计算出的CSI图像熵也应该出现在0.00006～7.0098之间。
 
-本文在每个情况下，使用600组CSI按照公式（\ref{entropy_fft2d_equation}）计算多组CSI的图像熵，如表\ref{fdd_entropy_fft2d}。从表中可以看出，无论哪种场景，终端固定的信道环境下的CSI随机性最低，终端移动的信道环境下的CSI随机性最高，这一点与TDD模式相同。与TDD相反的是，无论哪种信道环境，室内场景的CSI随机性最高，室外场景的CSI随机性最低。所有情况中，在室外场景下的终端固定时CSI随机性最低，低至1.7776；在室内场景下的终端移动时CSI随机性最高，高达4.8971。从表中分析得知，随着信道环境更加复杂，系统探测的CSI随机性也会增加。但是，室内场景测量的CSI随机性更好于室外场景测量。
+本文在每个情况下，使用600组CSI按照公式(\ref{entropy_fft2d_equation})计算多组CSI的图像熵，如表\ref{fdd_entropy_fft2d}。从表中可以看出，无论哪种场景，终端固定的信道环境下的CSI随机性最低，终端移动的信道环境下的CSI随机性最高，这一点与TDD模式相同。与TDD相反的是，无论哪种信道环境，室内场景的CSI随机性最高，室外场景的CSI随机性最低。所有情况中，在室外场景下的终端固定时CSI随机性最低，低至1.7776；在室内场景下的终端移动时CSI随机性最高，高达4.8971。从表中分析得知，随着信道环境更加复杂，系统探测的CSI随机性也会增加。但是，室内场景测量的CSI随机性更好于室外场景测量。
 
 \begin{table}[]
     \centering
@@ -1966,7 +1966,7 @@ BCH码（BCH codes、Bose–Chaudhuri–Hocquenghem codes）为取自Bose、Ray-
 
 时光易逝，一晃三年，研究生生涯即将结束，在此向所有帮助我过的老师、家人和朋友们表示由衷的感谢！
 
-这次的毕业论文设计总结是在我的指导老师彭林宁老师亲切关怀和悉心指导下完成的。从毕业设计选题到设计完成，彭林宁老师给予了我耐心与细心关怀，有了彭老师的耐心指导与细心关怀，我才不会在设计过程中迷失方向，失去前进动力。彭老师有严肃的科学态度，严谨的治学精神和精益求精的工作作风，这些都是我所需要学习的，感谢彭老师给予我这样一个学习机会，谢谢！
+首先，感谢我的导师彭林宁老师，在硕士期间对我的学习和科研工作给予指导，我才不会在学习过程中迷失方向，失去前进动力。彭老师有严肃的科学态度，严谨的治学精神和精益求精的工作作风，这些都是我所需要学习的，感谢彭老师给予我这样一个学习机会，谢谢！
 
 感谢实验室同门王玙璠不抛弃、不放弃，感谢项目组李老师在科研上的帮助和指导，感谢实验室师兄刘博谦、俞佳宝、王栋，感谢实验室师姐刑月秀，特别感谢已经毕业的李晶琪师姐和耿飞跃师兄，希望工作顺利！
 
